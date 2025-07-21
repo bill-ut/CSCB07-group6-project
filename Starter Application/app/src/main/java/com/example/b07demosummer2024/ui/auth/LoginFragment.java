@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavHost;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.b07demosummer2024.R;
@@ -76,9 +78,15 @@ public class LoginFragment extends Fragment {
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(requireActivity(), task -> {
+                    boolean isFirstLogin = false; // TODO: replace with whether user has answered any questions.
+
                     if (task.isSuccessful()) {
-                        NavHostFragment.findNavController(this)
-                                .navigate(R.id.action_login_to_home);
+                        NavController nav = NavHostFragment.findNavController(this);
+
+                        if (isFirstLogin) {
+                            nav.navigate(R.id.action_login_to_questionnaireFragment);
+                        }
+                        nav.navigate(R.id.action_login_to_home);
                     } else {
                         Toast.makeText(
                                 getContext(),
