@@ -7,11 +7,12 @@ public class SelectionQuestion extends Question {
     protected final int maxSelections;
 
     public SelectionQuestion(String statement,
+                             String id,
                              ArrayList<String> choices,
                              int maxSelections
 
     ) {
-        super(statement);
+        super(statement, id);
         this.maxSelections = maxSelections;
         this.choices = choices;
         this.response = new MultipleResponse();
