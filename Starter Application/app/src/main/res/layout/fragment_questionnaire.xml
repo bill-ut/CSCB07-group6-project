@@ -5,6 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="409dp"
+        android:layout_height="690dp"
+        android:layout_marginTop="72dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="1dp">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:text="@string/large_text" />
+    </androidx.core.widget.NestedScrollView>
+
     <TextView
         android:id="@+id/questionnaireHeader"
         android:layout_width="63dp"
@@ -15,4 +31,5 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

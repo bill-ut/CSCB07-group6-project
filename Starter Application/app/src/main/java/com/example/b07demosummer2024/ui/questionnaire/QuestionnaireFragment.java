@@ -1,4 +1,4 @@
-package com.example.b07demosummer2024.ui.questions;
+package com.example.b07demosummer2024.ui.questionnaire;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.b07demosummer2024.R;
+import com.example.b07demosummer2024.questions.Question;
 
 import java.util.ArrayList;
 

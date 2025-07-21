@@ -56,7 +56,7 @@
     </fragment>
     <fragment
         android:id="@+id/questionnaireFragment"
-        android:name="com.example.b07demosummer2024.ui.questions.QuestionnaireFragment"
+        android:name="com.example.b07demosummer2024.ui.questionnaire.QuestionnaireFragment"
         android:label="QuestionnaireFragment" >
         <action
             android:id="@+id/action_questionnaireFragment_to_home"
