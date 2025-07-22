@@ -1,19 +1,19 @@
-package com.example.b07demosummer2024.questions;
+package com.example.b07demosummer2024.questions.response;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class MultipleResponse extends Response {
-    private ArrayList<String> response;
+    private HashSet<String> response;
 
     public MultipleResponse() {
-        this.response = null;
+        this.response = new HashSet<>();
     }
 
-    public MultipleResponse(ArrayList<String> response) {
+    public MultipleResponse(HashSet<String> response) {
         this.response = response;
     }
 
-    public ArrayList<String> getResponse() {
+    public HashSet<String> getResponse() {
         return response;
     }
 

@@ -1,10 +1,10 @@
-package com.example.b07demosummer2024.questions;
+package com.example.b07demosummer2024.questions.response;
 
 public class SingleResponse extends Response {
     private String response;
 
     public SingleResponse() {
-        this.response = null;
+        this.response = "";
     }
 
     public SingleResponse(String response) {
