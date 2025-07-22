@@ -2,7 +2,7 @@
 To check a box, declare as such:
 - [x] checked option
 
-Do not edit `PULL_REQUEST_TEMPLATE.md` directly. The template will automatically be subtituted in place when creating a PR, please edit from there instead.
+Do not edit `PULL_REQUEST_TEMPLATE.md` directly. The template will automatically be substituted in place when creating a PR, please edit from there instead.
 
 # Description
 
