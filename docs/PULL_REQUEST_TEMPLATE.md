@@ -1,23 +1,31 @@
+*Usage*:
+To check a box, declare as such:
+- [x] checked option
+
+Do not edit `PULL_REQUEST_TEMPLATE.md` directly. The template will automatically be subtituted in place when creating a PR, please edit from there instead.
+
 # Description
 
-Added a login and signup page, as well as deleting unnecessary fragments. Using NavGraph now instead of hardcoding the pages.
+*include description of changes here*
 
 ## Type of change
 
 Please delete irrelevant options
 
 - [ ] Bug fix (non-breaking change which fixes an issue)
-- [O] New feature (non-breaking change which adds functionality)
+- [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
 - [ ] This change requires a documentation update
 - [ ] Documentation and code style update
 
-# Checklist:
+## Checklist:
 
-- [O] My code follows the style guidelines of this project
-- [O] I have performed a self-review of my code
-- [O] Unclear code blocks have been thoroughly commented
-- [O] I have updated corresponding changes to the documentation
-- [O] My changes generate no new warnings
-- [O] New and existing unit tests pass locally with my changes
-- [O] Any new features are unittested with full coverage and are documented
+- [ ] My code follows the style guidelines of this project
+- [ ] I have performed a self-review of my code
+- [ ] Unclear code blocks have been thoroughly commented
+- [ ] I have updated corresponding changes to the documentation
+- [ ] My changes generate no new warnings
+- [ ] New and existing unit tests pass locally with my changes
+- [ ] Any new features are unittested with full coverage and are documented
+
+### Note: Before merging, request a team member to review your code, preferably someone working on a different section.
