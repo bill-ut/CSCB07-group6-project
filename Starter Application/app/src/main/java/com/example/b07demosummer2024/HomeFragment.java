@@ -10,6 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import java.util.HashMap;
+import java.util.Map;
+
+import android.content.Intent;
+import android.net.Uri;
 
 public class HomeFragment extends Fragment {
 
@@ -31,6 +36,15 @@ public class HomeFragment extends Fragment {
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_home_to_login)
         );
+
+        Button testSaveBtn = view.findViewById(R.id.testSaveButton);
+        testSaveBtn.setOnClickListener(v -> {
+            Map<String, String> answers = new HashMap<>();
+            answers.put("q1", "Sometimes");
+            answers.put("q2", "Not In Relationship");
+            answers.put("q3", "Never");
+            AnswerSaver.saveAllAnswers(answers);
+        });
 
         return view;
     }
