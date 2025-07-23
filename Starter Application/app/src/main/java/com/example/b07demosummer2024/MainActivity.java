@@ -17,6 +17,9 @@ import android.content.Intent;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import android.net.Uri;
+
+
 public class MainActivity extends AppCompatActivity {
 
     FirebaseDatabase db;
@@ -25,6 +28,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Add Exit Button globally
+        Button exitButton = findViewById(R.id.emergencyExitButton);
+        exitButton.setOnClickListener(v -> {
+            // 1. Open a neutral site in browser
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"));
+            startActivity(browserIntent);
+            // 2. Close the app completely
+            finishAffinity();
+        });
     }
 
 
