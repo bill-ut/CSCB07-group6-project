@@ -13,15 +13,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.b07demosummer2024.R;
-import com.example.b07demosummer2024.questions.DropdownQuestion;
+import com.example.b07demosummer2024.data.JsonReader;
 import com.example.b07demosummer2024.questions.Question;
-import com.example.b07demosummer2024.QuestionParser; // temp
-import com.example.b07demosummer2024.questions.SelectionQuestion;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class QuestionnaireFragment extends Fragment {
-    HashMap<String, Question> questions;
+    static final String QUESTIONS_FILE = "questions.json";
+    LinkedHashMap<String, Question> questions;
     private LinearLayout layout;
 
 
@@ -44,9 +43,13 @@ public class QuestionnaireFragment extends Fragment {
     ) {
         super.onViewCreated(view, savedInstanceState);
 
+        if (getView() == null) {
+            Log.e("QuestionnaireFragment", "View not found");
+        }
+
         layout = getView().findViewById(R.id.questionnaireLayout);
 
-        this.questions = QuestionParser.readFile();
+        this.questions = JsonReader.getQuestionMap(getContext(), QUESTIONS_FILE);
         for (Question q: questions.values()) {
             q.buildWidget(getContext());
         }

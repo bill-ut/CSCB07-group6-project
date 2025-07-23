@@ -27,7 +27,7 @@
 
   "warmup3": {
     "type": "freeform",
-    "selections": null,
+    "selections": "text",
     "question": "Which room in your home feels the safest if you need to get away quickly?",
     "choices": null,
     "answer": [],
@@ -66,7 +66,7 @@
 
   "branch1": {
     "type": "freeform",
-    "selections": null,
+    "selections": "text",
     "question": "Enter a code word: ",
     "choices": null,
     "answer": [],

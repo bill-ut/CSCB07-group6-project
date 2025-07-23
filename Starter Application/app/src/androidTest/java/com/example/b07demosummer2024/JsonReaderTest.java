@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 import com.example.b07demosummer2024.data.*;
 import com.example.b07demosummer2024.questions.*;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -27,7 +27,7 @@ public class JsonReaderTest {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.example.b07demosummer2024", context.getPackageName());
 
-        HashMap<String, Question> map = JsonReader.getQuestionMap(context, "questions.json");
+        LinkedHashMap<String, Question> map = JsonReader.getQuestionMap(context, "questions.json");
 
         assertNotNull(map);
         assertTrue(map.containsKey("warmup1"));

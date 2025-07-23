@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class JsonReader {
 
@@ -33,8 +33,8 @@ public class JsonReader {
         return json;
     }
 
-    public static HashMap<String, Question> getQuestionMap(Context context, String fileName) {
-        HashMap<String, Question> questions = new HashMap<>();
+    public static LinkedHashMap<String, Question> getQuestionMap(Context context, String fileName) {
+        LinkedHashMap<String, Question> questions = new LinkedHashMap<>();
 
         try {
             String jsonString = loadJSONFromAsset(context, fileName);
@@ -78,7 +78,7 @@ public class JsonReader {
                         break;
                     }
                     case "freeform":
-                        String format = questionObject.getString("format");
+                        String format = questionObject.getString("selections");
                         question = new FreeformQuestion(questionText, key, format);
                         break;
                     default:
@@ -87,12 +87,15 @@ public class JsonReader {
                 }
 
                 if (question != null) {
+                    Log.d("JsonReader", "Question of type " + question.getClass() + " added");
                     questions.put(key, question);
                 }
             }
         } catch (JSONException e) {
             Log.e("JsonReader", "Error parsing JSON", e);
         }
+
+        Log.d("JsonReader", "Questions read: " + questions.size());
 
         return questions;
     }
