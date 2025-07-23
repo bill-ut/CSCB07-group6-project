@@ -16,13 +16,14 @@ import java.util.HashMap;
 
 public class JsonReader {
 
-    public String loadJSONFromAsset(Context context, String fileName) {
-        String json = null;
+    public static String loadJSONFromAsset(Context context, String fileName) {
+        String json;
         try {
             InputStream is = context.getAssets().open(fileName);
             int size = is.available();
             byte[] buffer = new byte[size];
-            is.read(buffer);
+            int throwaway = is.read(buffer);
+            Log.d("JsonReader", "Bytes Read: " + throwaway);
             is.close();
             json = new String(buffer, StandardCharsets.UTF_8);
         } catch (IOException ex) {
@@ -32,7 +33,7 @@ public class JsonReader {
         return json;
     }
 
-    public HashMap<String, Question> getQuestionMap(Context context, String fileName) {
+    public static HashMap<String, Question> getQuestionMap(Context context, String fileName) {
         HashMap<String, Question> questions = new HashMap<>();
 
         try {

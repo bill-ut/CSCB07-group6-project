@@ -27,8 +27,7 @@ public class JsonReaderTest {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.example.b07demosummer2024", context.getPackageName());
 
-        JsonReader reader = new JsonReader();
-        HashMap<String, Question> map = reader.getQuestionMap(context, "questions.json");
+        HashMap<String, Question> map = JsonReader.getQuestionMap(context, "questions.json");
 
         assertNotNull(map);
         assertTrue(map.containsKey("warmup1"));
