@@ -31,7 +31,12 @@ public class HomeFragment extends Fragment {
                 false
         );
 
+        Button questionRedirect = view.findViewById(R.id.questionnaireRedirect);
         Button logoutBtn = view.findViewById(R.id.logoutButton);
+        questionRedirect.setOnClickListener(v ->
+                NavHostFragment.findNavController(this)
+                        .navigate(R.id.action_home_to_questionnaireFragment)
+        );
         logoutBtn.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_home_to_login)
