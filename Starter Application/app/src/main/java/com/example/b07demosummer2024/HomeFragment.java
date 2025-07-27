@@ -58,6 +58,11 @@ public class HomeFragment extends Fragment {
                         .navigate(R.id.action_home_to_login)
         );
 
+        Button emergencyInfoButton = view.findViewById(R.id.emergencyInfoRedirect);
+        emergencyInfoButton.setOnClickListener(v -> {
+            NavHostFragment.findNavController(HomeFragment.this)
+                    .navigate(R.id.action_homeFragment_to_emergencyInfoFragment);
+        });
 
         return view;
     }
