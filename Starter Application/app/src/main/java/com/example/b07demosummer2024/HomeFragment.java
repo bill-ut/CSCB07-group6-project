@@ -58,14 +58,6 @@ public class HomeFragment extends Fragment {
                         .navigate(R.id.action_home_to_login)
         );
 
-        Button testSaveBtn = view.findViewById(R.id.testSaveButton);
-        testSaveBtn.setOnClickListener(v -> {
-            Map<String, String> answers = new HashMap<>();
-            answers.put("q1", "Sometimes");
-            answers.put("q2", "Not In Relationship");
-            answers.put("q3", "Never");
-            AnswerSaver.saveAllAnswers(answers);
-        });
 
         return view;
     }
