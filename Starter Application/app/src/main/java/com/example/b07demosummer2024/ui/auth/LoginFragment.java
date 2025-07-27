@@ -15,6 +15,7 @@ import androidx.navigation.NavHost;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.b07demosummer2024.R;
+import com.example.b07demosummer2024.data.EncryptedPrefsProvider;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -69,10 +70,7 @@ public class LoginFragment extends Fragment {
         String email    = emailEt.getText().toString().trim();
         String password = passwordEt.getText().toString();
 
-        if (email.contentEquals("admin") && password.contentEquals("admin")) {
-            NavHostFragment.findNavController(this).navigate(R.id.action_login_to_home);
-        }
-
+        // (keep your validation)
         if (TextUtils.isEmpty(email)) {
             emailEt.setError("Email is required");
             return;
@@ -84,21 +82,31 @@ public class LoginFragment extends Fragment {
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(requireActivity(), task -> {
-                    boolean isFirstLogin = false; // TODO: replace with whether user has answered any questions.
+                    if (!task.isSuccessful()) {
+                        Toast.makeText(getContext(),
+                                        "Login failed: " + task.getException().getMessage(),
+                                        Toast.LENGTH_LONG)
+                                .show();
+                        return;
+                    }
 
-                    if (task.isSuccessful()) {
-                        NavController nav = NavHostFragment.findNavController(this);
+                    // At this point the user is authenticated with Firebase.
+                    NavController nav = NavHostFragment.findNavController(this);
 
-                        if (isFirstLogin) {
-                            nav.navigate(R.id.action_login_to_questionnaireFragment);
+                    try {
+                        EncryptedPrefsProvider prefs = new EncryptedPrefsProvider(requireContext());
+                        String savedPin = prefs.getPin();
+                        if (savedPin == null) {
+                            NavHostFragment.findNavController(this)
+                                    .navigate(R.id.action_login_to_pin);
+                        } else {
+                            NavHostFragment.findNavController(this)
+                                    .navigate(R.id.action_login_to_home);
                         }
+                    } catch (Exception e) {
+                        // If encryption setup blows up, just continue to home
+                        e.printStackTrace();
                         nav.navigate(R.id.action_login_to_home);
-                    } else {
-                        Toast.makeText(
-                                getContext(),
-                                "Login failed: " + task.getException().getMessage(),
-                                Toast.LENGTH_LONG
-                        ).show();
                     }
                 });
     }

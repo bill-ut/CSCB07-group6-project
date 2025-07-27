@@ -22,7 +22,18 @@
             android:id="@+id/questionnaireLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:orientation="vertical">
+
+        <!-- Place the submit button here -->
+        <Button
+            android:id="@+id/submitAnswersButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Submit Answers" />
+
+        </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 
     <TextView

@@ -5,12 +5,30 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
 
+    <fragment
+        android:id="@+id/pinLoginFragment"
+        android:name="com.example.b07demosummer2024.ui.auth.PinLoginFragment"
+        android:label="PIN Login">
+        <!-- Fallback to password/Google -->
+        <action
+            android:id="@+id/action_pin_to_login"
+            app:destination="@id/loginFragment" />
+        <!-- On success, go to home (or questionnaire) -->
+        <action
+            android:id="@+id/action_pin_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+
     <!-- LOGIN -->
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.b07demosummer2024.ui.auth.LoginFragment"
         android:label="Login">
 
+        <!-- Existing actions… -->
         <action
             android:id="@+id/action_login_to_signup"
             app:destination="@id/signupFragment"/>
@@ -20,8 +38,18 @@
             app:destination="@id/homeFragment"/>
         <action
             android:id="@+id/action_login_to_questionnaireFragment"
-            app:destination="@id/questionnaireFragment" />
+            app:destination="@id/questionnaireFragment"/>
+
+        <!-- New action: Login → Create/Verify PIN -->
+        <action
+            android:id="@+id/action_login_to_pinLoginFragment"
+            app:destination="@id/pinLoginFragment"/>
+
+        <action
+            android:id="@+id/action_login_to_pin"
+            app:destination="@id/pinLoginFragment"/>
     </fragment>
+
 
     <!-- SIGNUP -->
     <fragment

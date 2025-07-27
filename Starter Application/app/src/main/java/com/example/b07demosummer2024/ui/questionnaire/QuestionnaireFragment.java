@@ -17,6 +17,13 @@ import com.example.b07demosummer2024.data.JsonReader;
 import com.example.b07demosummer2024.questions.Question;
 
 import java.util.LinkedHashMap;
+import android.widget.Button;
+
+import com.example.b07demosummer2024.AnswerSaver;
+import com.example.b07demosummer2024.questions.response.Response;
+
+import java.util.Map;
+import android.widget.Toast;
 
 public class QuestionnaireFragment extends Fragment {
     static final String QUESTIONS_FILE = "questions.json";
@@ -58,6 +65,21 @@ public class QuestionnaireFragment extends Fragment {
         for (Question q: questions.values()) {
             displayQuestion(q);
         }
+        View submitButton = view.findViewById(R.id.submitAnswersButton);
+        submitButton.setOnClickListener(v -> {
+            Map<String, com.example.b07demosummer2024.questions.response.Response> answers = new LinkedHashMap<>();
+
+            for (Map.Entry<String, Question> entry : questions.entrySet()) {
+                Question q = entry.getValue();
+                q.setResponse(); // updates internal response from UI
+                if (q.getResponse() != null) {
+                    answers.put(entry.getKey(), q.getResponse());
+                }
+            }
+
+            com.example.b07demosummer2024.AnswerSaver.saveAllAnswers(answers);
+            Toast.makeText(getContext(), "Answers saved successfully!", Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void displayQuestion(Question q) {

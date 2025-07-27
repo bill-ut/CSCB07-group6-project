@@ -42,6 +42,8 @@ dependencies {
 
     implementation("com.google.android.material:material:1.9.0")
 
+    implementation("androidx.security:security-crypto:1.1.0-alpha03")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
