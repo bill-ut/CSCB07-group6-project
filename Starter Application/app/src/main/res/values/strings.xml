@@ -105,5 +105,11 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
 
+    <string-array name="reminder_frequencies">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
+
 
 </resources>

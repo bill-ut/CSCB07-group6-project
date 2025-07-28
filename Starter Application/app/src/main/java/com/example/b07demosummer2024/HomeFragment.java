@@ -64,6 +64,12 @@ public class HomeFragment extends Fragment {
                     .navigate(R.id.action_homeFragment_to_emergencyInfoFragment);
         });
 
+        Button remindersButton = view.findViewById(R.id.remindersRedirect);
+        remindersButton.setOnClickListener(v -> {
+            NavHostFragment.findNavController(HomeFragment.this)
+                    .navigate(R.id.action_homeFragment_to_reminderFragment);
+        });
+
         return view;
     }
 }
