@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.example.b07demosummer2024.R;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -31,20 +36,28 @@ public class HomeFragment extends Fragment {
                 false
         );
 
+        // 1. Find the TextView
+        TextView tvEmail = view.findViewById(R.id.tvEmail);
+
+        // 2. Get current user and display their email
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null && user.getEmail() != null) {
+            tvEmail.setText(user.getEmail());
+        } else {
+            tvEmail.setText("Not signed in");
+        }
+
+        Button questionRedirect = view.findViewById(R.id.questionnaireRedirect);
         Button logoutBtn = view.findViewById(R.id.logoutButton);
+        questionRedirect.setOnClickListener(v ->
+                NavHostFragment.findNavController(this)
+                        .navigate(R.id.action_home_to_questionnaireFragment)
+        );
         logoutBtn.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_home_to_login)
         );
 
-        Button testSaveBtn = view.findViewById(R.id.testSaveButton);
-        testSaveBtn.setOnClickListener(v -> {
-            Map<String, String> answers = new HashMap<>();
-            answers.put("q1", "Sometimes");
-            answers.put("q2", "Not In Relationship");
-            answers.put("q3", "Never");
-            AnswerSaver.saveAllAnswers(answers);
-        });
 
         return view;
     }

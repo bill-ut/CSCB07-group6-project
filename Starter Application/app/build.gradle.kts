@@ -42,11 +42,16 @@ dependencies {
 
     implementation("com.google.android.material:material:1.9.0")
 
+    implementation("androidx.security:security-crypto:1.1.0-alpha03")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.firebase.database)
+    implementation(libs.navigation.fragment)
+    implementation(libs.legacy.support.v4)
+    implementation(libs.recyclerview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
