@@ -1,10 +1,11 @@
 package com.example.b07demosummer2024.questions;
 
 import android.content.Context;
-import android.view.View;
 
 import com.example.b07demosummer2024.questions.response.Response;
 import com.example.b07demosummer2024.questions.widget.Widget;
+
+import java.util.LinkedHashMap;
 
 public abstract class Question {
     protected final String id;
@@ -18,11 +19,26 @@ public abstract class Question {
         this.response = null;
     }
 
+    public abstract boolean isValid(); // TODO: implement in all child classes
+
+    public static boolean areAllValid(LinkedHashMap<String, Question> questions) {
+        for (Question q: questions.values()) {
+            if (!q.isValid())
+                return false;
+        }
+        return true;
+    }
+
     public Response getResponse() {
         return response;
     }
 
     public abstract void setResponse();
+
+    public void handler() {
+        setResponse();
+        widget.updateTips(response);
+    }
 
     public String getStatement() {
         return statement;

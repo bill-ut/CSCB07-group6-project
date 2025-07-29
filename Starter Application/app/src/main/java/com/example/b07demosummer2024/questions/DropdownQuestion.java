@@ -2,10 +2,8 @@ package com.example.b07demosummer2024.questions;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.example.b07demosummer2024.questions.response.MultipleResponse;
 import com.example.b07demosummer2024.questions.response.SingleResponse;
 import com.example.b07demosummer2024.questions.widget.SpinnerWidget;
 
@@ -20,14 +18,15 @@ public class DropdownQuestion extends Question {
         this.response = new SingleResponse();
     }
 
-    public ArrayList<String> getChoices() {
-        return choices;
+    @Override
+    public boolean isValid() {
+        return !response.isEmpty();
     }
 
     @Override
     public void setResponse() {
         ((SingleResponse) this.response).setResponse(
-                ((Spinner) this.widget.getView()).getSelectedItem().toString()
+                ((Spinner) this.widget.getWidget()).getSelectedItem().toString()
         );
 
         Log.d("Dropdown Question", "Set Response: " + ((SingleResponse) this.response).getResponse());
@@ -35,7 +34,7 @@ public class DropdownQuestion extends Question {
 
     @Override
     public void buildWidget(Context context) {
-        this.widget = new SpinnerWidget(context, choices);
-        this.widget.setHandler(this::setResponse);
+        this.widget = new SpinnerWidget(context, statement, response, choices);
+        this.widget.setHandler(this::handler);
     }
 }

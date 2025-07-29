@@ -3,6 +3,16 @@ package com.example.b07demosummer2024.questions.response;
 public class SingleResponse extends Response {
     private String response;
 
+    @Override
+    public boolean isEmpty() {
+        return response.isEmpty();
+    }
+
+    @Override
+    public boolean isValid() {
+        return !isEmpty();
+    }
+
     public SingleResponse() {
         this.response = "";
     }

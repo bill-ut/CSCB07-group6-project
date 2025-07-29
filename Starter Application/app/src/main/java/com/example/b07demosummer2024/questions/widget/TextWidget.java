@@ -5,15 +5,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import com.example.b07demosummer2024.R;
-
-import java.util.concurrent.Callable;
+import com.example.b07demosummer2024.questions.response.Response;
 
 public class TextWidget extends Widget {
-    public TextWidget(Context context) {
-        EditText et = new EditText(context);
-
-        this.widget = et;
+    public TextWidget(Context context, String statement, Response response) {
+        super(context, statement, response);
+        this.widget = new EditText(context);
+        buildLayout(statement, response);
     }
 
     public void setText(String text) {

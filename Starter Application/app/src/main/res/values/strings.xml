@@ -10,6 +10,7 @@
     <string name="spinner">Spinner</string>
     <string name="manage_items">Manage Items</string>
     <string name="text_edit_box">Enter response</string>
+    <string name="no_tips">No tips.</string>
 
     <string-array name="categories_array">
         <item>Books</item>

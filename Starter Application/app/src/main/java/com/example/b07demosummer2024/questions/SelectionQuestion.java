@@ -5,14 +5,12 @@ import android.util.Log;
 import android.widget.CheckBox;
 
 import com.example.b07demosummer2024.questions.response.MultipleResponse;
-import com.example.b07demosummer2024.questions.response.SingleResponse;
 import com.example.b07demosummer2024.questions.widget.CheckboxWidget;
 
 import java.util.ArrayList;
 
 public class SelectionQuestion extends Question {
     protected ArrayList<String> choices;
-    protected final int maxSelections;
 
     public SelectionQuestion(String statement,
                              String id,
@@ -21,13 +19,13 @@ public class SelectionQuestion extends Question {
 
     ) {
         super(statement, id);
-        this.maxSelections = maxSelections;
         this.choices = choices;
-        this.response = new MultipleResponse();
+        this.response = new MultipleResponse(maxSelections);
     }
 
-    public ArrayList<String> getChoices() {
-        return choices;
+    @Override
+    public boolean isValid() {
+        return response.isValid();
     }
 
     @Override
@@ -43,7 +41,7 @@ public class SelectionQuestion extends Question {
     }
 
     public void buildWidget(Context context) {
-        this.widget = new CheckboxWidget(context, choices);
-        this.widget.setHandler(this::setResponse);
+        this.widget = new CheckboxWidget(context, statement, response, choices);
+        this.widget.setHandler(this::handler);
     }
 }

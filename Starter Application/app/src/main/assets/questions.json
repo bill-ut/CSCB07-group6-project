@@ -99,6 +99,18 @@
       "No": "Even brief notes on your phone can be helpful. Start logging today."
     },
     "branches": []
+  },
+
+  "test scroll": {
+    "type": "dropdown",
+    "selections": null,
+    "question": "Sample long question name which will force the view to scroll, I can't think of anything else to write but here we go ill keep putting other stuff until this is long enough okay this should be good probably right??????????",
+    "choices": ["1", "2", "3", "4", "5"],
+    "answer": [],
+    "tips": {
+      "template": "what even is a tip??"
+    },
+    "branches": []
   }
 }
 
