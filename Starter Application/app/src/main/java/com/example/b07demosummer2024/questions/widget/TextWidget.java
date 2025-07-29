@@ -3,8 +3,13 @@ package com.example.b07demosummer2024.questions.widget;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
+import androidx.core.content.ContextCompat;
+
+import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.questions.response.Response;
 
 public class TextWidget extends Widget {
@@ -12,6 +17,20 @@ public class TextWidget extends Widget {
         super(context, statement, response);
         this.widget = new EditText(context);
         buildLayout(statement, response);
+    }
+
+    @Override
+    protected void setWarning() {
+        warning.setText(R.string.text_warning);
+        warning.setTextColor(ContextCompat.getColor(context, R.color.red));
+        warning.setTextSize(12.0F);
+        warning.setVisibility(View.VISIBLE);
+        warning.setLayoutParams(
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+        );
     }
 
     public void setText(String text) {

@@ -30,6 +30,10 @@ public class MultipleResponse extends Response {
         return response;
     }
 
+    public int getMaxSelections() {
+        return maxSelections;
+    }
+
     public void addResponse(String response) {
         this.response.add(response);
     }

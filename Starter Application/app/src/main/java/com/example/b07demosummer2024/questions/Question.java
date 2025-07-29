@@ -37,7 +37,7 @@ public abstract class Question {
 
     public void handler() {
         setResponse();
-        widget.updateTips(response);
+        widget.updateNotes(response);
     }
 
     public String getStatement() {

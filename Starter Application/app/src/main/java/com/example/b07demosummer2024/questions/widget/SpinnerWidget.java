@@ -4,8 +4,12 @@ import android.content.Context;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import androidx.core.content.ContextCompat;
+
+import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.questions.response.Response;
 
 import java.util.ArrayList;
@@ -24,6 +28,20 @@ public class SpinnerWidget extends Widget {
 
         this.widget = sp;
         buildLayout(statement, response);
+    }
+
+    @Override
+    protected void setWarning() {
+        warning.setText(R.string.spinner_warning);
+        warning.setTextColor(ContextCompat.getColor(context, R.color.red));
+        warning.setTextSize(12.0F);
+        warning.setVisibility(View.VISIBLE);
+        warning.setLayoutParams(
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+        );
     }
 
     @Override
