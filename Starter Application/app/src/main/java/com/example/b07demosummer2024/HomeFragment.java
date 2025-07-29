@@ -57,6 +57,13 @@ public class HomeFragment extends Fragment {
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_home_to_login)
         );
+        // inside onCreateView or onViewCreated, after findViewById for testSaveBtn:
+        Button supportBtn = view.findViewById(R.id.supportButton);
+        supportBtn.setOnClickListener(v ->
+                NavHostFragment.findNavController(this)
+                        .navigate(R.id.action_home_to_support)
+        );
+
 
 
         return view;
