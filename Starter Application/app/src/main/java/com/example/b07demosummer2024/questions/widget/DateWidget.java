@@ -7,7 +7,6 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 
 import com.example.b07demosummer2024.R;
@@ -53,7 +52,6 @@ public class DateWidget extends Widget {
     @Override
     public void setHandler(Runnable handler) {
         DatePicker.OnDateChangedListener d = (view, year, monthOfYear, dayOfMonth) -> {
-            setDate(dayOfMonth, monthOfYear, year);
             handler.run();
         };
 

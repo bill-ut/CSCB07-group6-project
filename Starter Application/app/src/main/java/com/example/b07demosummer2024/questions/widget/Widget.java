@@ -24,6 +24,7 @@ public abstract class Widget {
         warning.setId(View.generateViewId());
         layout.setId(View.generateViewId());
         setQuestionHeader(statement);
+        layout.setId(View.generateViewId());
     }
 
     public LinearLayout getView() {
