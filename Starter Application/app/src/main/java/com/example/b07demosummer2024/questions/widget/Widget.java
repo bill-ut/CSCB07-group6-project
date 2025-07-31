@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.questions.response.Response;
 
 public abstract class Widget {
@@ -13,7 +12,6 @@ public abstract class Widget {
     protected Response response;
     protected TextView text;
     protected View widget;
-    protected TextView tips;
     protected TextView warning;
     private final LinearLayout layout;
 
@@ -24,8 +22,6 @@ public abstract class Widget {
         layout = new LinearLayout(ctx);
         warning = new TextView(ctx);
         warning.setId(View.generateViewId());
-        tips = new TextView(ctx);
-        tips.setId(View.generateViewId());
         setQuestionHeader(statement);
     }
 
@@ -51,23 +47,6 @@ public abstract class Widget {
 
     protected abstract void setWarning();
 
-    public void setTips(Response response) { // TODO: parameters will likely change
-        if (!response.isEmpty()) {
-            tips.setText(R.string.no_tips); // TODO: replace with tip generator
-            tips.setTextSize(16.0F);
-            tips.setVisibility(View.VISIBLE);
-            tips.setLayoutParams(
-                    new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT
-                    )
-            );
-        }
-    }
-
-    public TextView getTips() {
-        return tips;
-    }
     public TextView getWarning() {
         return warning;
     }
@@ -81,19 +60,12 @@ public abstract class Widget {
         updateNotes(response);
     }
     public void updateNotes(Response response) {
-        setTips(response);
         setWarning();
         if (response.isValid()) {
-            if (layout.findViewById(tips.getId()) == null) {
-                layout.addView(getTips());
-            }
             if (layout.findViewById(warning.getId()) != null) {
                 layout.removeView(getWarning());
             }
         } else {
-            if (layout.findViewById(tips.getId()) != null) {
-                layout.removeView(getTips());
-            }
             if (layout.findViewById(warning.getId()) == null) {
                 layout.addView(getWarning(), 2);
             }
