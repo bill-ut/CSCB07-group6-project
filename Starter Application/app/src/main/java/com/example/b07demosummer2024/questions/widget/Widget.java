@@ -22,6 +22,7 @@ public abstract class Widget {
         layout = new LinearLayout(ctx);
         warning = new TextView(ctx);
         warning.setId(View.generateViewId());
+        layout.setId(View.generateViewId());
         setQuestionHeader(statement);
     }
 
@@ -47,10 +48,6 @@ public abstract class Widget {
 
     protected abstract void setWarning();
 
-    public TextView getWarning() {
-        return warning;
-    }
-
     public void buildLayout(String statement, Response response) {
         layout.setOrientation(LinearLayout.VERTICAL);
         setQuestionHeader(statement);
@@ -63,14 +60,16 @@ public abstract class Widget {
         setWarning();
         if (response.isValid()) {
             if (layout.findViewById(warning.getId()) != null) {
-                layout.removeView(getWarning());
+                layout.removeView(warning);
             }
         } else {
             if (layout.findViewById(warning.getId()) == null) {
-                layout.addView(getWarning(), 2);
+                layout.addView(warning);
             }
         }
     }
+
+    public abstract void setResponse(Response response);
 
     public abstract void setHandler(Runnable handler);
 }

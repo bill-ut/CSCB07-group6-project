@@ -53,8 +53,14 @@ public class CheckboxWidget extends Widget {
         );
     }
 
-    public ArrayList<CheckBox> getChildren() {
-        return this.checkboxes;
+    @Override
+    public void setResponse(Response response) {
+        for (CheckBox checkbox: checkboxes) {
+            if (checkbox.isChecked())
+                ((MultipleResponse) this.response).addResponse(checkbox.getText().toString());
+            else
+                ((MultipleResponse) this.response).removeResponse(checkbox.getText().toString());
+        }
     }
 
     @Override
