@@ -85,6 +85,8 @@ public class QuestionnaireFragment extends Fragment {
         });
     }
 
+
+
     private void displayQuestion(Question q) {
         layout.addView(q.getWidget().getView());
     }

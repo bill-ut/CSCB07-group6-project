@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.questions.response.Response;
+import com.example.b07demosummer2024.questions.response.SingleResponse;
 
 import java.util.ArrayList;
 
@@ -41,6 +42,13 @@ public class SpinnerWidget extends Widget {
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
                 )
+        );
+    }
+
+    @Override
+    public void setResponse(Response response) {
+        ((SingleResponse) this.response).setResponse(
+                ((Spinner) this.widget).getSelectedItem().toString()
         );
     }
 

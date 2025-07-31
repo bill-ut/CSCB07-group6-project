@@ -14,6 +14,7 @@
     <!-- Warning Messages -->
     <string name="text_warning">* Field is empty</string>
     <string name="spinner_warning">* Select one option</string>
+    <string name="date_warning">* Please enter a date</string>
     <plurals name="checkbox_warning">
         <item quantity="one">* Select %1$d option</item>
         <item quantity="other">* Select up to %1$d options</item>

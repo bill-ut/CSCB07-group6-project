@@ -23,6 +23,7 @@ public abstract class Widget {
         warning = new TextView(ctx);
         warning.setId(View.generateViewId());
         setQuestionHeader(statement);
+        layout.setId(View.generateViewId());
     }
 
     public LinearLayout getView() {
@@ -71,6 +72,8 @@ public abstract class Widget {
             }
         }
     }
+
+    public abstract void setResponse(Response response);
 
     public abstract void setHandler(Runnable handler);
 }

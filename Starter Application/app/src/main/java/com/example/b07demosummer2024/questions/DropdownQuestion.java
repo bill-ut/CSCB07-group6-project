@@ -1,8 +1,6 @@
 package com.example.b07demosummer2024.questions;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Spinner;
 
 import com.example.b07demosummer2024.questions.response.SingleResponse;
 import com.example.b07demosummer2024.questions.widget.SpinnerWidget;
@@ -21,15 +19,6 @@ public class DropdownQuestion extends Question {
     @Override
     public boolean isValid() {
         return !response.isEmpty();
-    }
-
-    @Override
-    public void setResponse() {
-        ((SingleResponse) this.response).setResponse(
-                ((Spinner) this.widget.getWidget()).getSelectedItem().toString()
-        );
-
-        Log.d("Dropdown Question", "Set Response: " + ((SingleResponse) this.response).getResponse());
     }
 
     @Override

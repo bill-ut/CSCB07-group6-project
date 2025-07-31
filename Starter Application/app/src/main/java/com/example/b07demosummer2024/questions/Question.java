@@ -19,7 +19,7 @@ public abstract class Question {
         this.response = null;
     }
 
-    public abstract boolean isValid(); // TODO: implement in all child classes
+    public abstract boolean isValid();
 
     public static boolean areAllValid(LinkedHashMap<String, Question> questions) {
         for (Question q: questions.values()) {
@@ -33,7 +33,11 @@ public abstract class Question {
         return response;
     }
 
-    public abstract void setResponse();
+    // public abstract void setResponse(String response);
+
+    public void setResponse() {
+        widget.setResponse(response);
+    }
 
     public void handler() {
         setResponse();
