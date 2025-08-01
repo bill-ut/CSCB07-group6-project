@@ -29,7 +29,7 @@
   "contact_name": {
     "type": "freeform",
     "selections": "text",
-    "questions": "Name one person you can call immediately in an emergency.",
+    "question": "Name one person you can call immediately in an emergency.",
     "choices": null,
     "tips": {
       "type": "template",

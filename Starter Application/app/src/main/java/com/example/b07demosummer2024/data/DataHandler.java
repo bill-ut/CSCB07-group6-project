@@ -40,8 +40,6 @@ public class DataHandler {
         });
      */
     public DataHandler(Context context, Consumer<DataHandler> onComplete ) {
-        String jsonString = JsonReader.loadJSONFromAsset(context, QUESTIONS_FILE);
-
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid;
         if (auth.getCurrentUser() != null) {
@@ -55,7 +53,7 @@ public class DataHandler {
                 .child("answers")
                 .child("warmup");
 
-        jsonString = JsonReader.loadJSONFromAsset(context, QUESTIONS_FILE);
+        String jsonString = JsonReader.loadJSONFromAsset(context, QUESTIONS_FILE);
         if (jsonString == null) {
             Log.e("DataHandler", "Error reading JSON file");
             return;
@@ -137,7 +135,7 @@ public class DataHandler {
                 template = tipObj.getString("template");
             } else if (tipObj.getString("type").equals("per_choice")) {
                 JSONObject data = tipObj.getJSONObject("data");
-                template = data.getString(getAnswerById(questionId).get(0));
+                template = data.getString(getAnswerById(questionId).get(0).replaceAll("\"", ""));
             } else {
                 Log.e("DataHandler", "Unknown tip type: " + tipObj.getString("type"));
                 return "";
