@@ -4,29 +4,27 @@
     "selections": 1,
     "question": "Which best describes your situation?",
     "choices": ["Still in a relationship", "Planning to leave", "Post-separation"],
-    "answer": [],
     "tips": {
-      "type" : "per_choice",
-      "data" : {
-          "Still in a relationship": "Keep this plan updated, and remember you can always reach out if things escalate.",
-          "Planning to leave": "Start packing small items now so you’re ready when you decide to leave.",
-          "Post-separation": "It’s normal to feel unsettled, refer back to this plan whenever you need a safety reminder."
-        }
-      },
-    "branches": ["abuse_types", "recording_incidents"]
+      "type": "per_choice",
+      "data": {
+        "Still in a relationship": "Keep this plan updated, and remember you can always reach out if things escalate.",
+        "Planning to leave": "Start packing small items now so you’re ready when you decide to leave.",
+        "Post-separation": "It’s normal to feel unsettled, refer back to this plan whenever you need a safety reminder."
+      }
+    },
+    "branches": ""
   },
 
   "city": {
     "type": "dropdown",
     "selections": null,
     "question": "What city do you live in?",
-    "choices": ["Toronto", "Vancouver", "Ottawa", "Edmonton"],
-    "answer": [],
+    "choices": ["Toronto", "Vancouver", "Ottawa", "Edmonton", "Other"],
     "tips": {
       "type": "template",
       "template": "Save the local support numbers for {city} in your phone's speed-dial so you can call immediately if you need help."
     },
-    "branches": []
+    "branches": ""
   },
 
   "safe_room": {
@@ -34,30 +32,28 @@
     "selections": "text",
     "question": "Which room in your home feels the safest if you need to get away quickly?",
     "choices": null,
-    "answer": [],
     "tips": {
       "type": "template",
       "template": "Keep your essentials (phone, keys, and a small flashlight) in {safe_room} so you can grab them instantly when you need to leave."
     },
-    "branches": []
+    "branches": ""
   },
 
-  "living_with": {
+  "living_arrangement": {
     "type": "choices",
     "selections": 1,
     "question": "Who do you live with?",
     "choices": ["Family", "Roommates", "Alone", "Partner"],
-    "answer": [],
     "tips": {
-      "type" : "per_choice",
-      "data" : {
-        "Family": "Let those you live with: {living_with}, know your safe room and cue-word so they can support you in an emergency.",
-        "Roommates": "Let those you live with: {living_with}, know your safe room and cue-word so they can support you in an emergency.",
+      "type": "per_choice",
+      "data": {
+        "Family": "Let those you live with: {living_arrangement}, know your safe room and cue-word so they can support you in an emergency.",
+        "Roommates": "Let those you live with: {living_arrangement}, know your safe room and cue-word so they can support you in an emergency.",
         "Alone": "Since you live alone, identify a trusted neighbor or friend and share your safe room location with them.",
         "Partner": "Because you live with your partner, keep your safety plan hidden (in {safe_room}), and consider storing a digital copy in a password-protected note so they won't see."
       }
     },
-    "branches": []
+    "branches": ""
   },
 
   "children": {
@@ -65,69 +61,14 @@
     "selections": 1,
     "question": "Do you have children?",
     "choices": ["Yes", "No"],
-    "answer": [],
-    "tips": {
-      "type" : "per_choice",
-      "data" : {
-        "Yes": "",
-        "No": "Even without children, it helps to identify a second safe space in your home."
-      }
-    },
-    "branches": ["code_word"]
-  },
-
-  "code_word": {
-    "type": "freeform",
-    "selections": "text",
-    "question": "Enter a code word: ",
-    "choices": null,
-    "answer": [],
-    "tips": {
-      "type": "template",
-      "template": "Practice your safety plan with your children so that when they hear {code_word}, they know exactly what to do."
-    },
-    "branches": []
-  },
-
-  "abuse_types": {
-    "type": "choices",
-    "selections": 4,
-    "question": "Which form(s) of abuse are you experiencing?",
-    "choices": ["Physical", "Emotional", "Financial", "Other"],
-    "answer": [],
-    "tips": {
-      "type": "template",
-      "template": "If you face {abuse_types} abuse, remember you don't have to face it alone. Reach out to your emergency contact right away."
-    },
-    "branches": []
-  },
-
-  "recording_incidents": {
-    "type": "choices",
-    "selections": 1,
-    "question": "Are you recording the incidents (dates, times, details?",
-    "choices": ["Yes", "No"],
-    "answer": [],
     "tips": {
       "type": "per_choice",
       "data": {
-        "Yes": "Log each incident (date, time, and a brief note) so you have clear records if needed later.",
-        "No": "Even brief notes on your phone can be helpful. Start logging today."
+        "Yes": "Practice your safety plan with your children so that when they hear {code_word}, they know exactly what to do.",
+        "No": "Even without children, it helps to identify a second safe space in your home."
       }
     },
-    "branches": []
-  },
-
-  "test scroll": {
-    "type": "dropdown",
-    "selections": null,
-    "question": "Sample long question name which will force the view to scroll, I can't think of anything else to write but here we go ill keep putting other stuff until this is long enough okay this should be good probably right??????????",
-    "choices": ["1", "2", "3", "4", "5"],
-    "answer": [],
-    "tips": {
-      "template": "what even is a tip??"
-    },
-    "branches": []
+    "branches": "code_word"
   }
 }
 

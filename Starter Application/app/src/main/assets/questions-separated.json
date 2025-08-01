@@ -1,0 +1,46 @@
+{
+  "contact": {
+    "type": "choices",
+    "selections": 1,
+    "question": "Has the abuser continued any contact?",
+    "choices": ["Yes", "No"],
+    "tips": {
+      "type": "per_choice",
+      "data": {
+        "Yes": "Since you've heard from them, stay vigilant and keep your protection order handy if you have one.",
+        "No": "Even without contact, keep your doors locked and your phone on in case you need to call 911."
+      }
+    },
+    "branches": ""
+  },
+
+  "protection": {
+    "type": "choices",
+    "selections": 1,
+    "question": "Do you have a protection order?",
+    "choices": ["Yes", "No"],
+    "tips": {
+      "type": "per_choice",
+      "data": {
+        "Yes": "Carry your {legal_order} at all times and share copies with anyone who needs to know.",
+        "No": "Consider applying for a protection order; it can help deter unwanted contact."
+      }
+    },
+    "branches": ""
+  },
+
+  "safety": {
+    "type": "choices",
+    "selections": 1,
+    "question": "Are you using any safety tools (cameras, door alarms)?",
+    "choices": ["Yes", "No"],
+    "tips": {
+      "type": "per_choice",
+      "data": {
+        "Yes": "Make sure you're {equipment} is in working order and placed where you'll notice it.",
+        "No": "Consider installing a simple door alarm or camera to alert you to unexpected entry."
+      }
+    },
+    "branches": "equipment"
+  }
+}

@@ -11,10 +11,11 @@ import androidx.core.content.ContextCompat;
 
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.questions.response.Response;
+import com.example.b07demosummer2024.questions.response.SingleResponse;
 
 public class TextWidget extends Widget {
     public TextWidget(Context context, String statement, Response response) {
-        super(context, statement, response);
+        super(context, statement);
         this.widget = new EditText(context);
         buildLayout(statement, response);
     }
@@ -35,6 +36,22 @@ public class TextWidget extends Widget {
 
     public void setText(String text) {
         ((EditText) this.widget).setText(text);
+    }
+
+    public String getText() {
+        return ((EditText) this.widget).getText().toString().trim();
+    }
+
+    @Override
+    public void setResponseValue(Response response) {
+        ((SingleResponse) response).setResponse(
+            ((EditText) this.widget).getText().toString().trim()
+        );
+    }
+
+    @Override
+    public void setDisplay(String response) {
+        ((EditText) this.widget).setText(response);
     }
 
     @Override

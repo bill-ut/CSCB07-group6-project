@@ -2,7 +2,7 @@ package com.example.b07demosummer2024.questions;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.CheckBox;
+import android.widget.LinearLayout;
 
 import com.example.b07demosummer2024.questions.response.MultipleResponse;
 import com.example.b07demosummer2024.questions.widget.CheckboxWidget;
@@ -28,20 +28,25 @@ public class SelectionQuestion extends Question {
         return response.isValid();
     }
 
-    @Override
-    public void setResponse() {
-        for (CheckBox checkbox: ((CheckboxWidget) this.widget).getChildren()) {
-            if (checkbox.isChecked())
-                ((MultipleResponse) this.response).addResponse(checkbox.getText().toString());
-            else
-                ((MultipleResponse) this.response).removeResponse(checkbox.getText().toString());
+    public void buildWidget(Context context, String defaultValue) {
+        this.widget = new CheckboxWidget(context, statement, response, choices);
+        if (defaultValue != null) {
+            this.widget.setDisplay(defaultValue);
         }
-
-        Log.d("Checkbox Question", "Set Response: " + ((MultipleResponse) this.response).getResponse().toString());
+        this.widget.setHandler(this::handler);
     }
 
-    public void buildWidget(Context context) {
-        this.widget = new CheckboxWidget(context, statement, response, choices);
-        this.widget.setHandler(this::handler);
+    @Override
+    public void updateBranch() {
+        Log.d("SelectionQuestion", "Attempting to update branch");
+        if (branch == null)
+            return;
+
+        LinearLayout ll = (LinearLayout) widget.getView().getParent();
+        if (((MultipleResponse) response).getResponse().contains("Yes") && response.isValid()) {
+            ll.addView(branch.second.getWidget().getView(), ll.indexOfChild(widget.getView()) + 1);
+        } else {
+            ll.removeView(branch.second.getWidget().getView());
+        }
     }
 }

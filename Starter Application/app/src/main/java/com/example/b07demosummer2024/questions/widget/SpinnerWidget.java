@@ -11,12 +11,14 @@ import androidx.core.content.ContextCompat;
 
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.questions.response.Response;
+import com.example.b07demosummer2024.questions.response.SingleResponse;
 
 import java.util.ArrayList;
 
 public class SpinnerWidget extends Widget {
+    ArrayList<String> choices;
     public SpinnerWidget(Context context, String statement, Response response, ArrayList<String> choices) {
-        super(context, statement, response);
+        super(context, statement);
         Spinner sp = new Spinner(context);
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(
@@ -27,6 +29,7 @@ public class SpinnerWidget extends Widget {
         sp.setAdapter(adapter);
 
         this.widget = sp;
+        this.choices = choices;
         buildLayout(statement, response);
     }
 
@@ -42,6 +45,18 @@ public class SpinnerWidget extends Widget {
                         LinearLayout.LayoutParams.WRAP_CONTENT
                 )
         );
+    }
+
+    @Override
+    public void setResponseValue(Response response) {
+        ((SingleResponse) response).setResponse(
+                ((Spinner) this.widget).getSelectedItem().toString()
+        );
+    }
+
+    @Override
+    public void setDisplay(String response) {
+        ((Spinner) this.widget).setSelection(choices.indexOf(response));
     }
 
     @Override
