@@ -9,15 +9,14 @@ import com.example.b07demosummer2024.questions.response.Response;
 
 public abstract class Widget {
     protected Context context;
-    protected Response response;
     protected TextView text;
     protected View widget;
     protected TextView warning;
     private final LinearLayout layout;
 
-    public Widget(Context ctx, String statement, Response response) {
+    public Widget(Context ctx, String statement) {
         this.context = ctx;
-        this.response = response;
+//        this.response = response;
         text = new TextView(ctx);
         layout = new LinearLayout(ctx);
         warning = new TextView(ctx);
@@ -34,6 +33,8 @@ public abstract class Widget {
     public View getWidget() {
         return widget;
     }
+
+    public abstract void setDisplay(String response);
 
     private void setQuestionHeader(String statement) {
         text.setText(statement);
@@ -70,7 +71,7 @@ public abstract class Widget {
         }
     }
 
-    public abstract void setResponse(Response response);
+    public abstract void setResponseValue(Response response);
 
     public abstract void setHandler(Runnable handler);
 }

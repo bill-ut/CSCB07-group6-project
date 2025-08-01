@@ -87,6 +87,11 @@ public class JsonReader {
                 }
 
                 if (question != null) {
+                    String branch = questionObject.getString("branches");
+                    if (!branch.isEmpty()) {
+                        question.setBranch(branch, null);
+                    }
+
                     Log.d("JsonReader", "Question of type " + question.getClass() + " added");
                     questions.put(key, question);
                 }

@@ -1,6 +1,7 @@
 package com.example.b07demosummer2024.questions;
 
 import android.content.Context;
+import android.util.Pair;
 
 import com.example.b07demosummer2024.questions.response.Response;
 import com.example.b07demosummer2024.questions.widget.Widget;
@@ -12,11 +13,13 @@ public abstract class Question {
     protected final String statement;
     protected Response response;
     protected Widget widget;
+    Pair<String, Question> branch;
 
     public Question(String statement, String id) {
         this.id = id;
         this.statement = statement;
         this.response = null;
+        this.branch = null;
     }
 
     public abstract boolean isValid();
@@ -33,24 +36,40 @@ public abstract class Question {
         return response;
     }
 
-    // public abstract void setResponse(String response);
-
     public void setResponse() {
-        widget.setResponse(response);
+        widget.setResponseValue(response);
     }
 
     public void handler() {
         setResponse();
         widget.updateNotes(response);
+        updateBranch();
     }
 
     public String getStatement() {
         return statement;
     }
 
-    public abstract void buildWidget(Context context);
+    public abstract void buildWidget(Context context, String defaultValue);
 
     public Widget getWidget() {
         return this.widget;
+    }
+
+    public abstract void updateBranch();
+
+    public Response getBranchedResponse() {
+        if (branch != null) {
+            return branch.second.response;
+        }
+        return null;
+    }
+
+    public void setBranch(String linkedResponse, Question question) {
+        branch = new Pair<>(linkedResponse, question);
+    }
+
+    public Pair<String, Question> getBranch() {
+        return branch;
     }
 }

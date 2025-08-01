@@ -1,0 +1,13 @@
+{
+  "branch1": {
+    "type": "freeform",
+    "selections": "text",
+    "question": "Enter a code word: ",
+    "choices": null,
+    "answer": [],
+    "tips": {
+      "template": "Practice your safety plan with your children so that when they hear {code_word},\nthey know exactly what to do."
+    },
+    "branches": ""
+  }
+}

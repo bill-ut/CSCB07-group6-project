@@ -21,11 +21,21 @@ public class FreeformQuestion extends Question {
     }
 
     @Override
-    public void buildWidget(Context context) {
+    public void buildWidget(Context context, String defaultValue) {
         if (type.equals("text"))
             this.widget = new TextWidget(context, statement, response);
         else
-            this.widget = new DateWidget(context, statement, response); // TODO: implement date input
+            this.widget = new DateWidget(context, statement, response);
+
+        if (defaultValue != null) {
+            this.widget.setDisplay(defaultValue);
+        }
+
         this.widget.setHandler(this::handler);
+    }
+
+    @Override
+    public void updateBranch() {
+        // does nothing, FreeformQuestions have no branching logic
     }
 }

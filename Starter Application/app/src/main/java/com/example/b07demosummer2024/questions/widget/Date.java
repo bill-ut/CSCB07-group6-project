@@ -15,6 +15,18 @@ public class Date {
         this.year = year;
     }
 
+    public int getDay() {
+        return day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
     public String getDate() {
         return day + "/" + month + "/" + year;
     }

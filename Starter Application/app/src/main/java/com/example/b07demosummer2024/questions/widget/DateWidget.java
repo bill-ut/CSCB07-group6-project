@@ -18,7 +18,7 @@ public class DateWidget extends Widget {
     private final Date date;
 
     public DateWidget(Context context, String statement, Response response) {
-        super(context, statement, response);
+        super(context, statement);
         this.widget = new DatePicker(new ContextThemeWrapper(context, R.style.SpinnerDatePicker));
         widget.setScaleX(0.75f);
         widget.setScaleY(0.75f);
@@ -41,8 +41,14 @@ public class DateWidget extends Widget {
     }
 
     @Override
-    public void setResponse(Response response) {
+    public void setResponseValue(Response response) {
         ((SingleResponse) response).setResponse(date.getDate());
+    }
+
+    @Override
+    public void setDisplay(String response) {
+        //TODO: parse date
+        ((DatePicker) this.widget).updateDate(date.getDay(), date.getMonth(), date.getYear());
     }
 
     private void setDate(int day, int month, int year) {

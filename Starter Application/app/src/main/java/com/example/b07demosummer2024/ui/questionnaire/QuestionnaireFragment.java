@@ -24,7 +24,9 @@ import android.widget.Toast;
 
 public class QuestionnaireFragment extends Fragment {
     static final String QUESTIONS_FILE = "questions.json";
+    static final String BRANCH_QUESTIONS = "questions-branches.json";
     LinkedHashMap<String, Question> questions;
+    LinkedHashMap<String, Question> branchQuestions;
     private LinearLayout layout;
 
 
@@ -53,15 +55,14 @@ public class QuestionnaireFragment extends Fragment {
 
         layout = getView().findViewById(R.id.questionnaireLayout);
 
+        this.branchQuestions = JsonReader.getQuestionMap(getContext(), BRANCH_QUESTIONS);
         this.questions = JsonReader.getQuestionMap(getContext(), QUESTIONS_FILE);
-        for (Question q: questions.values()) {
-            q.buildWidget(getContext());
-        }
-        Log.d("Questionnaire", "Array size: " + questions.size());
+        // process part 2 questions
 
-        for (Question q: questions.values()) {
-            displayQuestion(q);
-        }
+        setupQuestions(questions);
+        // more setups
+
+        Log.d("Questionnaire", "Array size: " + questions.size());
 
         View submitButton = view.findViewById(R.id.submitAnswersButton);
         submitButton.setOnClickListener(v -> {
@@ -85,9 +86,18 @@ public class QuestionnaireFragment extends Fragment {
         });
     }
 
+    private void setupQuestions(LinkedHashMap<String, Question> questionList) {
+        for (Question q: questionList.values()) {
+            if (q.getBranch() != null) {
+                String branch = q.getBranch().first;
+                Question branchQuestion = branchQuestions.get(branch);
+                assert branchQuestion != null;
+                branchQuestion.buildWidget(getContext(), null);
+                q.setBranch(branch, branchQuestion);
+            }
 
-
-    private void displayQuestion(Question q) {
-        layout.addView(q.getWidget().getView());
+            q.buildWidget(getContext(), null);
+            layout.addView(q.getWidget().getView());
+        }
     }
 }
