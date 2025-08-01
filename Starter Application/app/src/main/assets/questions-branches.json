@@ -1,13 +1,37 @@
 {
-  "branch1": {
+  "code_word": {
     "type": "freeform",
     "selections": "text",
-    "question": "Enter a code word: ",
+    "question": "Enter a code word.",
     "choices": null,
-    "answer": [],
-    "tips": {
-      "template": "Practice your safety plan with your children so that when they hear {code_word},\nthey know exactly what to do."
-    },
+    "tips": null,
+    "branches": ""
+  },
+
+  "temp_shelter": {
+    "type": "freeform",
+    "selections": "text",
+    "question": "Enter a temporary shelter.",
+    "choices": null,
+    "tips": null,
+    "branches": ""
+  },
+
+  "legal_order": {
+    "type": "freeform",
+    "selections": "text",
+    "question": "Enter a legal order.",
+    "choices": null,
+    "tips": null,
+    "branches": ""
+  },
+
+  "equipment": {
+    "type": "freeform",
+    "selections": "text",
+    "question": "Enter an equipment.",
+    "choices": null,
+    "tips": null,
     "branches": ""
   }
 }
