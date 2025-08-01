@@ -33,6 +33,10 @@ public abstract class Question {
         return response;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public abstract void setResponse();
 
     public void handler() {
