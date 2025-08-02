@@ -28,7 +28,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class DataHandler {
-    static final String QUESTIONS_FILE = "questions.json";
+    static final String[] QUESTIONS_FILES = {
+            "questions.json",
+            "questions-branches.json",
+            "questions-followup.json"
+    };
     private Map<String, JSONObject> questionsById;
 
     /*
@@ -52,55 +56,61 @@ public class DataHandler {
                 .child(uid)
                 .child("answers");
 
-        String jsonString = JsonReader.loadJSONFromAsset(context, QUESTIONS_FILE);
-        if (jsonString == null) {
-            Log.e("DataHandler", "Error reading JSON file");
-            return;
-        }
-        try {
-            JSONObject root = new JSONObject(jsonString);
-            questionsById = new LinkedHashMap<>();
-            Iterator<String> keys = root.keys();
-            while (keys.hasNext()) {
-                String key = keys.next();
-                JSONObject questionObject = root.getJSONObject(key);
-                questionsById.put(key, questionObject);
+        questionsById = new LinkedHashMap<>();
+        for (String filename : QUESTIONS_FILES) {
+            String jsonString = JsonReader.loadJSONFromAsset(context, filename);
+            if (jsonString == null) {
+                Log.e("DataHandler", "Error reading JSON file");
+                return;
             }
-            ref.get().addOnCompleteListener(task -> {
-                if (!task.isSuccessful()) {
-                    Log.e("DataHandler", "Error getting data", task.getException());
-                    onComplete.accept(this);
-                    return;
+
+            try {
+                JSONObject root = new JSONObject(jsonString);
+                Iterator<String> keys = root.keys();
+                while (keys.hasNext()) {
+                    String key = keys.next();
+                    JSONObject questionObject = root.getJSONObject(key);
+                    questionsById.put(key, questionObject);
                 }
+            } catch (JSONException e) {
+                Log.e("DataHandler", "Error parsing JSON", e);
+            }
 
-                DataSnapshot snapshot = task.getResult();
-                for (Map.Entry<String, JSONObject> entry : questionsById.entrySet()) {
-                    String questionId = entry.getKey();
-                    JSONObject questionObject = entry.getValue();
+        }
 
-                    Object value = snapshot.child(questionId).getValue();
-                    if (value != null) {
-                        try {
-                            JSONArray answers;
-                            if (value instanceof List) {
-                                answers = new JSONArray((List<?>) value);
-                            } else if (value instanceof String && ((String) value).startsWith("[") && ((String) value).endsWith("]")) {
-                                answers = new JSONArray((String) value);
-                            } else {
-                                answers = new JSONArray();
-                                answers.put(value.toString());
-                            }
-                            questionObject.put("answer", answers);
-                        } catch (JSONException e){
-                            Log.e("DataHandler", "Error fetching answer for question:" + questionId, e);
+        ref.get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.e("DataHandler", "Error getting data", task.getException());
+                onComplete.accept(this);
+                return;
+            }
+
+            DataSnapshot snapshot = task.getResult();
+            for (Map.Entry<String, JSONObject> entry : questionsById.entrySet()) {
+                String questionId = entry.getKey();
+                JSONObject questionObject = entry.getValue();
+
+                Object value = snapshot.child(questionId).getValue();
+                if (value != null) {
+                    try {
+                        JSONArray answers;
+                        if (value instanceof List) {
+                            answers = new JSONArray((List<?>) value);
+                        } else if (value instanceof String && ((String) value).startsWith("[") && ((String) value).endsWith("]")) {
+                            answers = new JSONArray((String) value);
+                        } else {
+                            answers = new JSONArray();
+                            answers.put(value.toString());
                         }
+                        questionObject.put("answer", answers);
+                    } catch (JSONException e){
+                        Log.e("DataHandler", "Error fetching answer for question:" + questionId, e);
                     }
                 }
-                onComplete.accept(this);
-            });
-        } catch (JSONException e) {
-            Log.e("DataHandler", "Error parsing JSON", e);
-        }
+            }
+            onComplete.accept(this);
+        });
+
     }
 
     public ArrayList<String> getAnswerByQuestion(Question question) {
@@ -124,6 +134,14 @@ public class DataHandler {
         if (questionObject == null) {
             return "";
         }
+
+        if (getAnswerById(questionId).isEmpty() ||
+            getAnswerById(questionId).get(0).trim().isBlank() ||
+            getAnswerById(questionId).get(0).trim().equals("\"\"") ||
+            getAnswerById(questionId).get(0).equals("null")) {
+            return "";
+        }
+
 
         String template = null;
 
@@ -160,7 +178,7 @@ public class DataHandler {
             List<String> values = getAnswerById(varName);
 
             String replacement;
-            if (values == null || values.isEmpty()) {
+            if (values == null || values.isEmpty() || values.get(0).trim().isEmpty()) {
                 replacement = "[missing answer]";
             } else if (values.size() == 1) {
                 replacement = values.get(0).replaceAll("\"", "");

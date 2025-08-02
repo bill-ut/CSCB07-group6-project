@@ -20,8 +20,10 @@ import com.example.b07demosummer2024.questions.Question;
 import com.example.b07demosummer2024.questions.response.Response;
 import com.example.b07demosummer2024.AnswerSaver;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 
+import java.util.List;
 import java.util.Map;
 
 import android.widget.TextView;
@@ -83,18 +85,28 @@ public class QuestionnaireFragment extends Fragment {
 
         View submitButton = view.findViewById(R.id.submitAnswersButton);
         View.OnClickListener saver = v -> {
-            if (!Question.areAllValid(questions)) {
+            if (!Question.areAllValid(questions) &&
+                !Question.areAllValid(branchQuestions) &&
+                !Question.areAllValid(followupQuestions)) {
                 Toast.makeText(getContext(), "Invalid response to one or more questions", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             Map<String, Response> answers = new LinkedHashMap<>();
 
-            for (Map.Entry<String, Question> entry : questions.entrySet()) {
-                Question q = entry.getValue();
-                q.setResponse(); // updates internal response from UI
-                if (q.getResponse() != null) {
-                    answers.put(entry.getKey(), q.getResponse());
+            List<Map<String, Question>> allQuestions = Arrays.asList(
+                    questions,
+                    branchQuestions,
+                    followupQuestions
+            );
+
+            for (Map<String, Question> questionMap : allQuestions) {
+                for (Map.Entry<String, Question> entry : questionMap.entrySet()) {
+                    Question q = entry.getValue();
+                    q.setResponse(); // updates internal response from UI
+                    if (q.getResponse() != null) {
+                        answers.put(entry.getKey(), q.getResponse());
+                    }
                 }
             }
 

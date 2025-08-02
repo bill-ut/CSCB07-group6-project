@@ -29,10 +29,7 @@ public class tipsFragment extends Fragment {
 
     static String[] QUESTION_JSONS = {"questions.json",
                                     "questions-branches.json",
-                                    "questions-followup.json",
-                                    "questions-leaving.json",
-                                    "questions-relationship.json",
-                                    "questions-separated.json"};
+                                    "questions-followup.json"};
     ArrayList<TipsModel> tipsModels = new ArrayList<>();
 
     public tipsFragment() {
@@ -60,12 +57,6 @@ public class tipsFragment extends Fragment {
         if (getView() == null) {
             Log.e("tipsFragment", "View not found");
         }
-
-        Question question = new SelectionQuestion("a", "situation", new ArrayList<>(), 1);
-        new DataHandler(getContext(), dh -> {
-            dh.getAnswerByQuestion(question);
-            Log.d("DataHandler", dh.getTipById("leave_timing"));
-        });
     }
 
     private void setUpTipModels(RecyclerView recyclerView) {
