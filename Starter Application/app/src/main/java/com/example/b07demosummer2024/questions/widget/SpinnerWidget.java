@@ -1,20 +1,24 @@
 package com.example.b07demosummer2024.questions.widget;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-import com.google.android.material.navigation.NavigationBarView;
+import androidx.core.content.ContextCompat;
+
+import com.example.b07demosummer2024.R;
+import com.example.b07demosummer2024.questions.response.Response;
+import com.example.b07demosummer2024.questions.response.SingleResponse;
 
 import java.util.ArrayList;
 
 public class SpinnerWidget extends Widget {
-    public SpinnerWidget(Context context, ArrayList<String> choices) {
+    ArrayList<String> choices;
+    public SpinnerWidget(Context context, String statement, Response response, ArrayList<String> choices) {
+        super(context, statement);
         Spinner sp = new Spinner(context);
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(
@@ -25,6 +29,34 @@ public class SpinnerWidget extends Widget {
         sp.setAdapter(adapter);
 
         this.widget = sp;
+        this.choices = choices;
+        buildLayout(statement, response);
+    }
+
+    @Override
+    protected void setWarning() {
+        warning.setText(R.string.spinner_warning);
+        warning.setTextColor(ContextCompat.getColor(context, R.color.red));
+        warning.setTextSize(12.0F);
+        warning.setVisibility(View.VISIBLE);
+        warning.setLayoutParams(
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+        );
+    }
+
+    @Override
+    public void setResponseValue(Response response) {
+        ((SingleResponse) response).setResponse(
+                ((Spinner) this.widget).getSelectedItem().toString()
+        );
+    }
+
+    @Override
+    public void setDisplay(String response) {
+        ((Spinner) this.widget).setSelection(choices.indexOf(response));
     }
 
     @Override

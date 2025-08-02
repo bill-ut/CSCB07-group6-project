@@ -1,0 +1,13 @@
+{
+  "support_choice": {
+    "type": "choices",
+    "selections": 1,
+    "question": "Which type of support would help most right now?",
+    "choices": ["Counselling", "Legal aid", "Financial guidance", "Co-parenting resources"],
+    "tips": {
+      "type": "template",
+      "template": "Reach out to {support_choice} - they can offer the specialized help you need right now."
+    },
+    "branches": null
+  }
+}

@@ -1,34 +1,43 @@
 package com.example.b07demosummer2024.ui.questionnaire;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.data.JsonReader;
 import com.example.b07demosummer2024.questions.Question;
-
-import java.util.LinkedHashMap;
-import android.widget.Button;
-
-import com.example.b07demosummer2024.AnswerSaver;
 import com.example.b07demosummer2024.questions.response.Response;
+import com.example.b07demosummer2024.AnswerSaver;
 
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+
+import java.util.List;
 import java.util.Map;
+
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class QuestionnaireFragment extends Fragment {
     static final String QUESTIONS_FILE = "questions.json";
+    static final String BRANCH_QUESTIONS = "questions-branches.json";
+    static final String FOLLOWUP_QUESTIONS = "questions-followup.json";
     LinkedHashMap<String, Question> questions;
+    LinkedHashMap<String, Question> branchQuestions;
+    LinkedHashMap<String, Question> followupQuestions;
     private LinearLayout layout;
+    TextView header2;
 
 
     public QuestionnaireFragment() {
@@ -44,6 +53,7 @@ public class QuestionnaireFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_questionnaire, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     public void onViewCreated(
         @NonNull View view,
         @Nullable Bundle savedInstanceState
@@ -56,48 +66,100 @@ public class QuestionnaireFragment extends Fragment {
 
         layout = getView().findViewById(R.id.questionnaireLayout);
 
+        this.branchQuestions = JsonReader.getQuestionMap(getContext(), BRANCH_QUESTIONS);
+
         this.questions = JsonReader.getQuestionMap(getContext(), QUESTIONS_FILE);
-        for (Question q: questions.values()) {
-            q.buildWidget(getContext());
-        }
+        this.followupQuestions = JsonReader.getQuestionMap(getContext(), FOLLOWUP_QUESTIONS);
+
+        // setup questions
+        addHeader("Section 1:");
+        setupQuestions(questions);
+        header2 = addHeader("Section 2:");
+        Question first = questions.firstEntry().getValue();
+        layout.removeView(first.getBranchLayout());
+        layout.addView(first.getBranchLayout(), layout.indexOfChild(header2) + 1);
+        addHeader("Section 3:");
+        setupQuestions(followupQuestions);
+
         Log.d("Questionnaire", "Array size: " + questions.size());
 
-        for (Question q: questions.values()) {
-            displayQuestion(q);
-        }
         View submitButton = view.findViewById(R.id.submitAnswersButton);
-        submitButton.setOnClickListener(v -> {
-            Map<String, com.example.b07demosummer2024.questions.response.Response> answers = new LinkedHashMap<>();
+        View.OnClickListener saver = v -> {
+            if (!Question.areAllValid(questions) &&
+                !Question.areAllValid(branchQuestions) &&
+                !Question.areAllValid(followupQuestions)) {
+                Toast.makeText(getContext(), "Invalid response to one or more questions", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-            for (Map.Entry<String, Question> entry : questions.entrySet()) {
-                Question q = entry.getValue();
-                q.setResponse(); // updates internal response from UI
-                if (q.getResponse() != null) {
-                    answers.put(entry.getKey(), q.getResponse());
+            Map<String, Response> answers = new LinkedHashMap<>();
+
+            List<Map<String, Question>> allQuestions = Arrays.asList(
+                    questions,
+                    branchQuestions,
+                    followupQuestions
+            );
+
+            for (Map<String, Question> questionMap : allQuestions) {
+                for (Map.Entry<String, Question> entry : questionMap.entrySet()) {
+                    Question q = entry.getValue();
+                    q.setResponse(); // updates internal response from UI
+                    if (q.getResponse() != null) {
+                        answers.put(entry.getKey(), q.getResponse());
+                    }
                 }
             }
 
-            com.example.b07demosummer2024.AnswerSaver.saveAllAnswers(answers);
+            AnswerSaver.saveAllAnswers(answers);
             Toast.makeText(getContext(), "Answers saved successfully!", Toast.LENGTH_SHORT).show();
-        });
+        };
+
+        submitButton.setOnClickListener(saver);
     }
 
-    private void displayQuestion(Question q) {
-        Log.d("Questionnaire", "displayQuestion() called");
+    @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
+    private void setupQuestions(LinkedHashMap<String, Question> questionList) {
 
-        // display text
+        for (Question q: questionList.values()) {
+            setupQuestion(q, false);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
+    private void setupQuestion(Question q, boolean isBranch) {
+        q.buildWidget(getContext(), null);
+        q.buildBranch(getContext());
+
+        if (!q.getBranches().isEmpty()) {
+            for (Map.Entry<String, Pair<String, Question>> entry : q.getBranches().sequencedEntrySet()) {
+                Question branchQuestion = branchQuestions.get(entry.getKey());
+                entry.setValue(new Pair<>(entry.getValue().first, branchQuestion));
+                assert branchQuestion != null;
+                setupQuestion(branchQuestion, true);
+            }
+        }
+
+        if (!isBranch) {
+            layout.addView(q.getWidget().getView());
+            layout.addView(q.getBranchLayout(),
+                    layout.indexOfChild(q.getWidget().getView()) + 1);
+        }
+    }
+
+    private TextView addHeader(String header) {
         TextView text = new TextView(getContext());
-        text.setText(q.getStatement());
-        text.setTextSize(16.0F);
+
+        text.setText(header);
+        text.setTextSize(32.0F);
         text.setVisibility(View.VISIBLE);
         text.setLayoutParams(
-                new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                )
+            new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
         );
-
+        text.setId(View.generateViewId());
         layout.addView(text);
-        layout.addView(q.getWidget().getView());
+        return text;
     }
 }

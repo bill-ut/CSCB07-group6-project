@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class SupportFragment extends Fragment {
 
-    private static final String CITY_QID = "warmup2";
+    private static final String CITY_QID = "city";
 
     private TextView tvHeader;
     private LinearLayout llContainer;
@@ -63,13 +63,12 @@ public class SupportFragment extends Fragment {
 
         // Fetch and resolve the user's city answer
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference warmupRef = FirebaseDatabase.getInstance()
+        DatabaseReference ref = FirebaseDatabase.getInstance()
                 .getReference("users")
                 .child(uid)
-                .child("answers")
-                .child("warmup");
+                .child("answers");
 
-        warmupRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override public void onDataChange(@NonNull DataSnapshot snap) {
                 // Log all keys/values for debugging
                 for (DataSnapshot child : snap.getChildren()) {
