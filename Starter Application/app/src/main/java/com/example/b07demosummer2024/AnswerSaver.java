@@ -22,7 +22,6 @@ public class AnswerSaver {
             .getReference("users")
             .child(uid)
             .child("answers")
-            .child("warmup")
             .child(questionId);
 
         Object value = convertResponseToStorableValue(response);

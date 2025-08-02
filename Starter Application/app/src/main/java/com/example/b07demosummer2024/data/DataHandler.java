@@ -50,8 +50,7 @@ public class DataHandler {
         }
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users")
                 .child(uid)
-                .child("answers")
-                .child("warmup");
+                .child("answers");
 
         String jsonString = JsonReader.loadJSONFromAsset(context, QUESTIONS_FILE);
         if (jsonString == null) {
