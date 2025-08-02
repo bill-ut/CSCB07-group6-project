@@ -23,7 +23,7 @@
     "type": "dropdown",
     "selections": null,
     "question": "What city do you live in?",
-    "choices": ["Toronto", "Vancouver", "Ottawa", "Edmonton", "Other"],
+    "choices": ["Toronto", "Vancouver", "Ottawa", "Montreal", "Calgary"],
     "tips": {
       "type": "template",
       "template": "Save the local support numbers for {city} in your phone's speed-dial so you can call immediately if you need help."

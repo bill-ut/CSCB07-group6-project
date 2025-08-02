@@ -85,6 +85,10 @@
         <action
             android:id="@+id/action_home_to_tips"
             app:destination="@id/tipsFragment" />
+        <action
+            android:id="@+id/action_home_to_support"
+            app:destination="@id/supportFragment"/>
+
     </fragment>
     <fragment
         android:id="@+id/questionnaireFragment"
@@ -103,5 +107,13 @@
             android:id="@+id/action_tips_to_home"
             app:destination="@id/homeFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/supportFragment"
+        android:name="com.example.b07demosummer2024.ui.support.SupportFragment"
+        android:label="Support Resources">
+        <!-- optional actions if you want Back or deep-links -->
+    </fragment>
+
 
 </navigation>
