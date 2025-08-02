@@ -21,7 +21,6 @@ public class AnswerSaver {
         DatabaseReference ref = FirebaseDatabase.getInstance()
             .getReference("users")
             .child(uid)
-            .child("answers")
             .child(questionId);
 
         Object value = convertResponseToStorableValue(response);
@@ -46,8 +45,7 @@ public class AnswerSaver {
         DatabaseReference ref = FirebaseDatabase.getInstance()
                 .getReference("users")
                 .child(uid)
-                .child("answers")
-                .child("warmup");
+                .child("answers");
 
         ref.setValue(converted);
     }
