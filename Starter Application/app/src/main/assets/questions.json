@@ -12,7 +12,11 @@
         "Post-separation": "It’s normal to feel unsettled, refer back to this plan whenever you need a safety reminder."
       }
     },
-    "branches": ""
+    "branches": {
+      "Still in a relationship": ["abuse_type", "logging_incidents", "contact_name"],
+      "Planning to leave": ["leave_timing", "essentials", "money_location", "safe_house"],
+      "Post-separation": ["contact", "protection", "safety"]
+    }
   },
 
   "city": {
@@ -24,7 +28,7 @@
       "type": "template",
       "template": "Save the local support numbers for {city} in your phone's speed-dial so you can call immediately if you need help."
     },
-    "branches": ""
+    "branches": null
   },
 
   "safe_room": {
@@ -36,7 +40,7 @@
       "type": "template",
       "template": "Keep your essentials (phone, keys, and a small flashlight) in {safe_room} so you can grab them instantly when you need to leave."
     },
-    "branches": ""
+    "branches": null
   },
 
   "living_arrangement": {
@@ -53,7 +57,7 @@
         "Partner": "Because you live with your partner, keep your safety plan hidden (in {safe_room}), and consider storing a digital copy in a password-protected note so they won't see."
       }
     },
-    "branches": ""
+    "branches": null
   },
 
   "children": {
@@ -68,7 +72,9 @@
         "No": "Even without children, it helps to identify a second safe space in your home."
       }
     },
-    "branches": "code_word"
+    "branches": {
+      "Yes": ["code_word"]
+    }
   }
 }
 

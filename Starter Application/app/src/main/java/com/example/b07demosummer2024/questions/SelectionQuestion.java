@@ -2,12 +2,13 @@ package com.example.b07demosummer2024.questions;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.LinearLayout;
+import android.util.Pair;
 
 import com.example.b07demosummer2024.questions.response.MultipleResponse;
 import com.example.b07demosummer2024.questions.widget.CheckboxWidget;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class SelectionQuestion extends Question {
     protected ArrayList<String> choices;
@@ -21,6 +22,10 @@ public class SelectionQuestion extends Question {
         super(statement, id);
         this.choices = choices;
         this.response = new MultipleResponse(maxSelections);
+    }
+
+    public ArrayList<String> getChoices() {
+        return choices;
     }
 
     @Override
@@ -38,15 +43,24 @@ public class SelectionQuestion extends Question {
 
     @Override
     public void updateBranch() {
-        Log.d("SelectionQuestion", "Attempting to update branch");
-        if (branch == null)
-            return;
+        Log.d("Selection", "self=" + branchLayout);
+        Log.d("Selection", "parent=" + branchLayout.getParent());
 
-        LinearLayout ll = (LinearLayout) widget.getView().getParent();
-        if (((MultipleResponse) response).getResponse().contains("Yes") && response.isValid()) {
-            ll.addView(branch.second.getWidget().getView(), ll.indexOfChild(widget.getView()) + 1);
-        } else {
-            ll.removeView(branch.second.getWidget().getView());
+        if (branches.isEmpty()) {
+            return;
+        }
+
+        for (LinkedHashMap.Entry<String, Pair<String, Question>> entry : branches.entrySet()) {
+            branchLayout.removeView(entry.getValue().second.getWidget().getView());
+            branchLayout.removeView(entry.getValue().second.getBranchLayout());
+
+            Log.d("Selection", "Adding branches<validResponse=" + response.isValid() + " target=" + entry.getValue().first);
+            if (((MultipleResponse) response).getResponse().contains(entry.getValue().first)
+                    && response.isValid()) {
+                Log.d("Selection", "Added branch");
+                branchLayout.addView(entry.getValue().second.getWidget().getView());
+                branchLayout.addView(entry.getValue().second.getBranchLayout());
+            }
         }
     }
 }

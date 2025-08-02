@@ -11,6 +11,9 @@
     <string name="text_edit_box">Enter response</string>
     <string name="no_tips">No tips.</string>
 
+    <!-- Questionnaire -->
+    <string name="submission">Submit Answers</string>
+
     <!-- Warning Messages -->
     <string name="text_warning">* Field is empty</string>
     <string name="spinner_warning">* Select one option</string>
