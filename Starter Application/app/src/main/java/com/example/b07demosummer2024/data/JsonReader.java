@@ -65,6 +65,22 @@ public class JsonReader {
                         int maxSelections = questionObject.getInt("selections");
 
                         question = new SelectionQuestion(questionText, key, choices, maxSelections);
+
+                        if (questionObject.isNull("branches")) {
+                            break;
+                        }
+                        JSONObject branchOptions = questionObject.getJSONObject("branches");
+
+                        for (String s : ((SelectionQuestion) question).getChoices()) {
+                            if (!branchOptions.isNull(s)) {
+                                JSONArray branches = branchOptions.getJSONArray(s);
+                                for (int i = 0; i < branches.length(); i++) {
+                                    Log.d("JSONParser", "Added branch to " + branches.getString(i) + " from " + s);
+                                    question.addBranch(s, branches.getString(i), null);
+                                }
+                            }
+                        }
+
                         break;
                     }
                     case "dropdown": {
@@ -87,12 +103,8 @@ public class JsonReader {
                 }
 
                 if (question != null) {
-                    String branch = questionObject.getString("branches");
-                    if (!branch.isEmpty()) {
-                        question.setBranch(branch, null);
-                    }
-
-                    Log.d("JsonReader", "Question of type " + question.getClass() + " added");
+                    Log.d("JsonReader", "Question of type " + question.getClass() +
+                            " added, branches=" + question.getBranches().size());
                     questions.put(key, question);
                 }
             }

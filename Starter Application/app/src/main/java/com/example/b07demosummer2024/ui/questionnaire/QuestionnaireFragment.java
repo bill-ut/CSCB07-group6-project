@@ -1,7 +1,9 @@
 package com.example.b07demosummer2024.ui.questionnaire;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.b07demosummer2024.R;
@@ -20,14 +23,19 @@ import com.example.b07demosummer2024.AnswerSaver;
 import java.util.LinkedHashMap;
 
 import java.util.Map;
+
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class QuestionnaireFragment extends Fragment {
     static final String QUESTIONS_FILE = "questions.json";
     static final String BRANCH_QUESTIONS = "questions-branches.json";
+    static final String FOLLOWUP_QUESTIONS = "questions-followup.json";
     LinkedHashMap<String, Question> questions;
     LinkedHashMap<String, Question> branchQuestions;
+    LinkedHashMap<String, Question> followupQuestions;
     private LinearLayout layout;
+    TextView header2;
 
 
     public QuestionnaireFragment() {
@@ -43,6 +51,7 @@ public class QuestionnaireFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_questionnaire, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     public void onViewCreated(
         @NonNull View view,
         @Nullable Bundle savedInstanceState
@@ -56,16 +65,24 @@ public class QuestionnaireFragment extends Fragment {
         layout = getView().findViewById(R.id.questionnaireLayout);
 
         this.branchQuestions = JsonReader.getQuestionMap(getContext(), BRANCH_QUESTIONS);
-        this.questions = JsonReader.getQuestionMap(getContext(), QUESTIONS_FILE);
-        // process part 2 questions
 
+        this.questions = JsonReader.getQuestionMap(getContext(), QUESTIONS_FILE);
+        this.followupQuestions = JsonReader.getQuestionMap(getContext(), FOLLOWUP_QUESTIONS);
+
+        // setup questions
+        addHeader("Section 1:");
         setupQuestions(questions);
-        // more setups
+        header2 = addHeader("Section 2:");
+        Question first = questions.firstEntry().getValue();
+        layout.removeView(first.getBranchLayout());
+        layout.addView(first.getBranchLayout(), layout.indexOfChild(header2) + 1);
+        addHeader("Section 3:");
+        setupQuestions(followupQuestions);
 
         Log.d("Questionnaire", "Array size: " + questions.size());
 
         View submitButton = view.findViewById(R.id.submitAnswersButton);
-        submitButton.setOnClickListener(v -> {
+        View.OnClickListener saver = v -> {
             if (!Question.areAllValid(questions)) {
                 Toast.makeText(getContext(), "Invalid response to one or more questions", Toast.LENGTH_SHORT).show();
                 return;
@@ -83,21 +100,54 @@ public class QuestionnaireFragment extends Fragment {
 
             AnswerSaver.saveAllAnswers(answers);
             Toast.makeText(getContext(), "Answers saved successfully!", Toast.LENGTH_SHORT).show();
-        });
+        };
+
+        submitButton.setOnClickListener(saver);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     private void setupQuestions(LinkedHashMap<String, Question> questionList) {
-        for (Question q: questionList.values()) {
-            if (q.getBranch() != null) {
-                String branch = q.getBranch().first;
-                Question branchQuestion = branchQuestions.get(branch);
-                assert branchQuestion != null;
-                branchQuestion.buildWidget(getContext(), null);
-                q.setBranch(branch, branchQuestion);
-            }
 
-            q.buildWidget(getContext(), null);
-            layout.addView(q.getWidget().getView());
+        for (Question q: questionList.values()) {
+            setupQuestion(q, false);
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
+    private void setupQuestion(Question q, boolean isBranch) {
+        q.buildWidget(getContext(), null);
+        q.buildBranch(getContext());
+
+        if (!q.getBranches().isEmpty()) {
+            for (Map.Entry<String, Pair<String, Question>> entry : q.getBranches().sequencedEntrySet()) {
+                Question branchQuestion = branchQuestions.get(entry.getKey());
+                entry.setValue(new Pair<>(entry.getValue().first, branchQuestion));
+                assert branchQuestion != null;
+                setupQuestion(branchQuestion, true);
+            }
+        }
+
+        if (!isBranch) {
+            layout.addView(q.getWidget().getView());
+            layout.addView(q.getBranchLayout(),
+                    layout.indexOfChild(q.getWidget().getView()) + 1);
+        }
+    }
+
+    private TextView addHeader(String header) {
+        TextView text = new TextView(getContext());
+
+        text.setText(header);
+        text.setTextSize(32.0F);
+        text.setVisibility(View.VISIBLE);
+        text.setLayoutParams(
+            new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        );
+        text.setId(View.generateViewId());
+        layout.addView(text);
+        return text;
     }
 }
