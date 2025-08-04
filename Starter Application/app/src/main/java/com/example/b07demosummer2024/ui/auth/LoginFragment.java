@@ -11,28 +11,26 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.NavHost;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.data.EncryptedPrefsProvider;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.Objects;
-
-public class LoginFragment extends Fragment {
-
-    private FirebaseAuth mAuth;
+public class LoginFragment extends Fragment implements LoginContract.View {
+    private LoginContract.Presenter presenter;
     private TextInputEditText emailEt, passwordEt;
     private MaterialButton signInBtn;
     private View toSignupLink;
 
-    public LoginFragment() {
-        // Required empty public constructor
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        presenter = new LoginPresenter(new FirebaseAuthRepository());
     }
 
+    @Nullable
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater,
@@ -49,65 +47,73 @@ public class LoginFragment extends Fragment {
     ) {
         super.onViewCreated(view, savedInstanceState);
 
-        mAuth = FirebaseAuth.getInstance();
+        emailEt      = view.findViewById(R.id.emailEditText);
+        passwordEt   = view.findViewById(R.id.passwordEditText);
+        signInBtn    = view.findViewById(R.id.signInButton);
+        toSignupLink = view.findViewById(R.id.toSignupText);
 
-        emailEt       = view.findViewById(R.id.emailEditText);
-        passwordEt    = view.findViewById(R.id.passwordEditText);
-        signInBtn     = view.findViewById(R.id.signInButton);
-        toSignupLink  = view.findViewById(R.id.toSignupText);
-
-        // Navigate to signup
         toSignupLink.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_login_to_signup)
         );
 
-        // Attempt login
-        signInBtn.setOnClickListener(v -> attemptSignIn());
+        signInBtn.setOnClickListener(v ->
+                presenter.onLoginClicked(
+                        emailEt.getText().toString().trim(),
+                        passwordEt.getText().toString()
+                )
+        );
     }
 
-    private void attemptSignIn() {
-        String email    = emailEt.getText().toString().trim();
-        String password = passwordEt.getText().toString();
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.attachView(this);
+    }
 
-        // (keep your validation)
-        if (TextUtils.isEmpty(email)) {
-            emailEt.setError("Email is required");
-            return;
+    @Override
+    public void onStop() {
+        presenter.detachView();
+        super.onStop();
+    }
+
+    // --- LoginContract.View methods ---
+
+    @Override
+    public void showEmailError(String msg) {
+        emailEt.setError(msg);
+    }
+
+    @Override
+    public void showPasswordError(String msg) {
+        passwordEt.setError(msg);
+    }
+
+    @Override
+    public void showProgress(boolean visible) {
+        // TODO: toggle a ProgressBar in your layout
+    }
+
+    @Override
+    public void showGeneralError(String msg) {
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onLoginSuccess() {
+        // After Firebase auth, decide PIN vs Home
+        NavController nav = NavHostFragment.findNavController(this);
+        try {
+            EncryptedPrefsProvider prefs = new EncryptedPrefsProvider(requireContext());
+            String savedPin = prefs.getPin();
+            if (TextUtils.isEmpty(savedPin)) {
+                nav.navigate(R.id.action_login_to_pin);
+            } else {
+                nav.navigate(R.id.action_login_to_home);
+            }
+        } catch (Exception e) {
+            // fallback
+            nav.navigate(R.id.action_login_to_home);
         }
-        if (password.length() < 6) {
-            passwordEt.setError("Min 6 characters");
-            return;
-        }
-
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(requireActivity(), task -> {
-                    if (!task.isSuccessful()) {
-                        Toast.makeText(getContext(),
-                                        "Login failed: " + task.getException().getMessage(),
-                                        Toast.LENGTH_LONG)
-                                .show();
-                        return;
-                    }
-
-                    // At this point the user is authenticated with Firebase.
-                    NavController nav = NavHostFragment.findNavController(this);
-
-                    try {
-                        EncryptedPrefsProvider prefs = new EncryptedPrefsProvider(requireContext());
-                        String savedPin = prefs.getPin();
-                        if (savedPin == null) {
-                            NavHostFragment.findNavController(this)
-                                    .navigate(R.id.action_login_to_pin);
-                        } else {
-                            NavHostFragment.findNavController(this)
-                                    .navigate(R.id.action_login_to_home);
-                        }
-                    } catch (Exception e) {
-                        // If encryption setup blows up, just continue to home
-                        e.printStackTrace();
-                        nav.navigate(R.id.action_login_to_home);
-                    }
-                });
     }
 }
