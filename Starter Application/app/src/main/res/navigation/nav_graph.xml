@@ -106,11 +106,33 @@
         <action
             android:id="@+id/action_emergencyInfoFragment_to_emergencyContactFragment"
             app:destination="@id/emergencyContactFragment" />
+        <action
+            android:id="@+id/action_emergencyInfoFragment_to_documentFragment"
+            app:destination="@id/documentFragment" />
+        <action
+            android:id="@+id/action_emergencyInfoFragment_to_safeLocationFragment"
+            app:destination="@id/safeLocationFragment" />
+        <action
+            android:id="@+id/action_emergencyInfoFragment_to_medicationFragment"
+            app:destination="@id/medicationFragment" />
     </fragment>
 
-    <!-- EMERGENCY CONTACT (required destination!) -->
+
     <fragment
         android:id="@+id/emergencyContactFragment"
         android:name="com.example.b07demosummer2024.ui.emergency.EmergencyContactFragment"
         android:label="Emergency Contact" />
+    <fragment
+        android:id="@+id/documentFragment"
+        android:name="com.example.b07demosummer2024.ui.emergency.DocumentFragment"
+        android:label="Documents to Pack" />
+    <fragment
+        android:id="@+id/safeLocationFragment"
+        android:name="com.example.b07demosummer2024.ui.emergency.SafeLocationFragment"
+        android:label="Safe Locations" />
+    <fragment
+        android:id="@+id/medicationFragment"
+        android:name="com.example.b07demosummer2024.ui.emergency.MedicationFragment"
+        android:label="Medications" />
+
 </navigation>

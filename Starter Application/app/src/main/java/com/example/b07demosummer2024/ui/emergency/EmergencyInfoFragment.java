@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,18 +42,28 @@ public class EmergencyInfoFragment extends Fragment {
                     navController.navigate(R.id.action_emergencyInfoFragment_to_emergencyContactFragment);
                     break;
                 case "Documents":
-                    // TODO: Add navigation to DocumentsFragment
+                    navController = Navigation.findNavController(requireView());
+                    navController.navigate(R.id.action_emergencyInfoFragment_to_documentFragment);
                     break;
                 case "Safe Locations":
-                    // TODO: Add navigation to SafeLocationsFragment
+                    navController = Navigation.findNavController(requireView());
+                    navController.navigate(R.id.action_emergencyInfoFragment_to_safeLocationFragment);
                     break;
                 case "Medications":
-                    // TODO: Add navigation to MedicationsFragment
+                    navController = Navigation.findNavController(requireView());
+                    navController.navigate(R.id.action_emergencyInfoFragment_to_medicationFragment);
                     break;
             }
         });
 
         recyclerView.setAdapter(adapter);
+
+        // ADD HOME BUTTON CLICK LISTENER
+        Button homeButton = view.findViewById(R.id.homeButton);
+        homeButton.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigateUp();
+        });
+
         return view;
     }
 }
