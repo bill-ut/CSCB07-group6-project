@@ -2,7 +2,6 @@ package com.example.b07demosummer2024.questions.widget;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
@@ -52,9 +51,9 @@ public class DateWidget extends Widget {
     public void setDisplay(String response) {
         Date dateResponse = DataHandler.stringToDate(response);
         ((DatePicker) this.widget).updateDate(
-                dateResponse.getDay(),
+                dateResponse.getYear(),
                 dateResponse.getMonth(),
-                dateResponse.getYear()
+                dateResponse.getDay()
         );
     }
 
