@@ -1,4 +1,4 @@
-package com.example.b07demosummer2024.questions.widget;
+package com.example.b07demosummer2024.data;
 
 public class Date {
     int day;

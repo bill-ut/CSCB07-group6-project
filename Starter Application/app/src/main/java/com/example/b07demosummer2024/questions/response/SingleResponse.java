@@ -17,15 +17,16 @@ public class SingleResponse extends Response {
         this.response = "";
     }
 
-    public SingleResponse(String response) {
-        this.response = response;
-    }
-
     public String getResponse() {
         return response;
     }
 
     public void setResponse(String response) {
         this.response = response;
+    }
+
+    @Override
+    public void setValue(String value) {
+        this.response = value;
     }
 }

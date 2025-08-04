@@ -46,6 +46,10 @@ public abstract class Question {
         widget.setResponseValue(response);
     }
 
+    public void setResponseValue(String value) {
+        response.setValue(value);
+    }
+
     public void handler() {
         setResponse();
         widget.updateNotes(response);

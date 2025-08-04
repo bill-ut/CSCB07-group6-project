@@ -11,6 +11,7 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 
 import com.example.b07demosummer2024.R;
+import com.example.b07demosummer2024.data.Date;
 import com.example.b07demosummer2024.questions.response.Response;
 import com.example.b07demosummer2024.questions.response.SingleResponse;
 
@@ -47,7 +48,7 @@ public class DateWidget extends Widget {
 
     @Override
     public void setDisplay(String response) {
-        //TODO: parse date
+        // TODO: parse date
         ((DatePicker) this.widget).updateDate(date.getDay(), date.getMonth(), date.getYear());
     }
 

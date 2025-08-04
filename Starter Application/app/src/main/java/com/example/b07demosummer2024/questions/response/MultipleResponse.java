@@ -1,9 +1,11 @@
 package com.example.b07demosummer2024.questions.response;
 
+import com.example.b07demosummer2024.data.DataHandler;
+
 import java.util.HashSet;
 
 public class MultipleResponse extends Response {
-    private final HashSet<String> response;
+    private HashSet<String> response;
     private final int maxSelections;
 
     @Override
@@ -21,13 +23,13 @@ public class MultipleResponse extends Response {
         this.maxSelections = maxSelections;
     }
 
-    public MultipleResponse(HashSet<String> response, int maxSelections) {
-        this.response = response;
-        this.maxSelections = maxSelections;
-    }
-
     public HashSet<String> getResponse() {
         return response;
+    }
+
+    @Override
+    public void setValue(String value) {
+        this.response = new HashSet<>(DataHandler.stringToArray(value));
     }
 
     public int getMaxSelections() {

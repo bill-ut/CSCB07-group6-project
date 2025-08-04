@@ -115,7 +115,9 @@ public class QuestionnaireFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     private void setupQuestion(Question q, boolean isBranch) {
-        q.buildWidget(getContext(), null);
+        String savedResponse = null; // TODO: read from db
+        q.setResponseValue(savedResponse);
+        q.buildWidget(getContext(), savedResponse);
         q.buildBranch(getContext());
 
         if (!q.getBranches().isEmpty()) {
