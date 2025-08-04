@@ -2,7 +2,6 @@ package com.example.b07demosummer2024.questions;
 
 import android.content.Context;
 import android.util.Pair;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;

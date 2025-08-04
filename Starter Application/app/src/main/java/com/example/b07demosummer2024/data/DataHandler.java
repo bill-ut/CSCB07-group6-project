@@ -2,13 +2,9 @@ package com.example.b07demosummer2024.data;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.example.b07demosummer2024.questions.*;
-import com.example.b07demosummer2024.data.JsonReader;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,8 +12,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.regex.*;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -116,6 +110,7 @@ public class DataHandler {
     public ArrayList<String> getAnswerByQuestion(Question question) {
         return getAnswerById(question.getId());
     }
+
     public ArrayList<String> getAnswerById(String questionId) {
         JSONObject questionObject = questionsById.get(questionId);
         if (questionObject == null) {
@@ -143,7 +138,7 @@ public class DataHandler {
         }
 
 
-        String template = null;
+        String template;
 
         try {
             JSONObject tipObj = questionObject.getJSONObject("tips");
@@ -226,5 +221,18 @@ public class DataHandler {
             parsed.add(s);
         }
         return parsed;
+    }
+
+    public static Date stringToDate(String s) {
+        String[] components = s.substring(1, s.length() - 1).split(String.valueOf(Date.sep));
+        Integer day = Integer.getInteger(components[0]);
+        Integer month = Integer.getInteger(components[1]);
+        Integer year = Integer.getInteger(components[2]);
+
+        assert day != null;
+        assert month != null;
+        assert year != null;
+
+        return new Date(day, month, year);
     }
 }
