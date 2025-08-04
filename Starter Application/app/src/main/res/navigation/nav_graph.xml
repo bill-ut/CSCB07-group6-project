@@ -86,6 +86,10 @@
         <action
             android:id="@+id/action_home_to_questionnaireFragment"
             app:destination="@id/questionnaireFragment" />
+        <action
+            android:id="@+id/action_home_to_support"
+            app:destination="@id/supportFragment"/>
+
     </fragment>
     <fragment
         android:id="@+id/questionnaireFragment"
@@ -135,4 +139,11 @@
         android:name="com.example.b07demosummer2024.ui.emergency.MedicationFragment"
         android:label="Medications" />
 
+    <fragment
+        android:id="@+id/supportFragment"
+        android:name="com.example.b07demosummer2024.ui.support.SupportFragment"
+        android:label="Support Resources">
+        <!-- optional actions if you want Back or deep-links -->
+    </fragment>
+    
 </navigation>
