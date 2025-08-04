@@ -44,6 +44,8 @@ dependencies {
 
     implementation("androidx.security:security-crypto:1.1.0-alpha03")
 
+    implementation("com.google.code.gson:gson:2.13.1")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -52,6 +54,7 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.legacy.support.v4)
     implementation(libs.recyclerview)
+    implementation(libs.cardview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

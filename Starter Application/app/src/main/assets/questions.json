@@ -23,7 +23,7 @@
     "type": "dropdown",
     "selections": null,
     "question": "What city do you live in?",
-    "choices": ["Toronto", "Vancouver", "Ottawa", "Edmonton", "Other"],
+    "choices": ["Toronto", "Vancouver", "Ottawa", "Montreal", "Calgary"],
     "tips": {
       "type": "template",
       "template": "Save the local support numbers for {city} in your phone's speed-dial so you can call immediately if you need help."
@@ -52,7 +52,7 @@
       "type": "per_choice",
       "data": {
         "Family": "Let those you live with: {living_arrangement}, know your safe room and cue-word so they can support you in an emergency.",
-        "Roommates": "Let those you live with: Roommates, know your safe room and cue-word so they can support you in an emergency.",
+        "Roommates": "Let those you live with: {living_arrangement}, know your safe room and cue-word so they can support you in an emergency.",
         "Alone": "Since you live alone, identify a trusted neighbor or friend and share your safe room location with them.",
         "Partner": "Because you live with your partner, keep your safety plan hidden (in {safe_room}), and consider storing a digital copy in a password-protected note so they won't see."
       }

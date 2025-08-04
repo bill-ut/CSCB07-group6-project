@@ -45,6 +45,9 @@ public abstract class Question {
     public void setResponse() {
         widget.setResponseValue(response);
     }
+    public String getId() {
+        return id;
+    }
 
     public void setResponseValue(String value) {
         response.setValue(value);

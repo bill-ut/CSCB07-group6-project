@@ -1,0 +1,41 @@
+{//local victom services, hotlines, shleters, legal aid, and police
+  "Toronto": [
+    { "name": "Victim Services Toronto", "url": "https://www.victimservicestoronto.com/home" },
+    { "name": "Victim Crisis Response Program", "url": "tel: 416-808-7066" },
+    { "name": "Ontario Shelters", "url": "https://sheltersafe.ca/ontario/" },
+    { "name": "Legal Aid Ontario", "url": "https://www.legalaid.on.ca/" },
+    { "name": "Toronto Police Service", "url": "https://www.tps.ca/" }
+  ],
+
+  "Vancouver": [
+    { "name": "Family Services of Greater Vancouver", "url": "https://fsgv.ca/programs/victim-services/" },
+    { "name": "VPD Victim Services Unit", "url": "tel: 604-717-2737" },
+    { "name": "Vancouver Rape Relief and Women's Shelter", "url": "https://rapereliefshelter.bc.ca/" },
+    { "name": "Legal Aid BC", "url": "https://legalaid.bc.ca/" },
+    { "name": "Vancouver Police", "url": "https://vpd.ca/" }
+  ],
+
+  "Ottawa": [
+    { "name": "Ottawa Victim Services", "url": "https://ovs-svo.com/" },
+    { "name": "Ottawa Victim Services", "url": "tel: 613-238-2762" },
+    { "name": "Ontario Shelters", "url": "https://sheltersafe.ca/ontario/" },
+    { "name": "Legal Aid Ontario", "url": "https://www.legalaid.on.ca/" },
+    { "name": "Ottawa Police Service", "url": "https://www.ottawapolice.ca/" }
+  ],
+
+  "Montreal": [
+    { "name": "Centre d’aide aux victimes d’actes criminels (CAVAC) – Montréal", "url": "https://cavac.qc.ca/en/" },
+    { "name": "SOS violence conjugale", "url": "tel: 1-800-363-9010" },
+    { "name": "Quebec Shelters", "url": "https://sheltersafe.ca/quebec/" },
+    { "name": "Legal Aid Montreal", "url": "https://www.aidejuridiquedemontreal.ca/en/" },
+    { "name": "Service de police de la Ville de Montréal", "url": "https://www.spvm.qc.ca/" }
+  ],
+
+  "Calgary": [
+    { "name": "Victim Assistance Support Team (VAST)", "url": "https://www.calgary.ca/cps/community-programs-and-resources/victims-of-crime/victim-assistance-support-team.html" },
+    { "name": "Distress Centre Calgary", "url": "tel: 403-266-4357" },
+    { "name": "Calgary Shelters", "url": "https://sheltersafe.ca/alberta/" },
+    { "name": "Legal Aid Alberta", "url": "https://www.legalaid.ab.ca/" },
+    { "name": "Calgary Police Service", "url": "https://www.calgary.ca/cps/" }
+  ]
+}

@@ -48,15 +48,27 @@ public class HomeFragment extends Fragment {
         }
 
         Button questionRedirect = view.findViewById(R.id.questionnaireRedirect);
+        Button tipsRedirectBtn = view.findViewById(R.id.tipsRedirect);
         Button logoutBtn = view.findViewById(R.id.logoutButton);
+
         questionRedirect.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_home_to_questionnaireFragment)
         );
+        tipsRedirectBtn.setOnClickListener(v->
+                NavHostFragment.findNavController(this)
+                        .navigate(R.id.action_home_to_tips));
         logoutBtn.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_home_to_login)
         );
+        // inside onCreateView or onViewCreated, after findViewById for testSaveBtn:
+        Button supportBtn = view.findViewById(R.id.supportButton);
+        supportBtn.setOnClickListener(v ->
+                NavHostFragment.findNavController(this)
+                        .navigate(R.id.action_home_to_support)
+        );
+
 
 
         return view;

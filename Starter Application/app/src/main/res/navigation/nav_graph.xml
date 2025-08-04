@@ -2,6 +2,7 @@
 <navigation
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
 
@@ -81,6 +82,13 @@
         <action
             android:id="@+id/action_home_to_questionnaireFragment"
             app:destination="@id/questionnaireFragment" />
+        <action
+            android:id="@+id/action_home_to_tips"
+            app:destination="@id/tipsFragment" />
+        <action
+            android:id="@+id/action_home_to_support"
+            app:destination="@id/supportFragment"/>
+
     </fragment>
     <fragment
         android:id="@+id/questionnaireFragment"
@@ -90,5 +98,22 @@
             android:id="@+id/action_questionnaireFragment_to_home"
             app:destination="@id/homeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/tipsFragment"
+        android:name="com.example.b07demosummer2024.ui.tips.tipsFragment"
+        android:label=" "
+        tools:layout="@layout/fragment_tips" >
+        <action
+            android:id="@+id/action_tips_to_home"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/supportFragment"
+        android:name="com.example.b07demosummer2024.ui.support.SupportFragment"
+        android:label="Support Resources">
+        <!-- optional actions if you want Back or deep-links -->
+    </fragment>
+
 
 </navigation>
