@@ -27,7 +27,7 @@ public class FreeformQuestion extends Question {
         else
             this.widget = new DateWidget(context, statement, response);
 
-        if (defaultValue != null) {
+        if (defaultValue != null && !defaultValue.isEmpty()) {
             this.widget.setDisplay(defaultValue);
         }
 

@@ -75,12 +75,12 @@ public class QuestionnaireFragment extends Fragment {
             // setup questions
             addHeader("Section 1:");
             setupQuestions(questions, dh);
-            setupQuestions(followupQuestions, dh);
             header2 = addHeader("Section 2:");
             Question first = questions.firstEntry().getValue();
             layout.removeView(first.getBranchLayout());
             layout.addView(first.getBranchLayout(), layout.indexOfChild(header2) + 1);
             addHeader("Section 3:");
+            setupQuestions(followupQuestions, dh);
 
 
             Log.d("Questionnaire", "Array size: " + questions.size());
@@ -132,8 +132,8 @@ public class QuestionnaireFragment extends Fragment {
     private void setupQuestion(Question q, boolean isBranch, DataHandler dh) {
         String savedResponse = DataHandler.cleanString(dh.getAnswerByQuestion(q).toString());
 
-        q.setResponseValue(savedResponse);
         q.buildWidget(getContext(), savedResponse);
+        q.setResponseValue(savedResponse);
         q.buildBranch(getContext());
 
         if (!q.getBranches().isEmpty()) {
@@ -150,6 +150,9 @@ public class QuestionnaireFragment extends Fragment {
             layout.addView(q.getBranchLayout(),
                     layout.indexOfChild(q.getWidget().getView()) + 1);
         }
+
+        q.updateBranch();
+        q.getWidget().updateNotes(q.getResponse());
     }
 
     private TextView addHeader(String header) {

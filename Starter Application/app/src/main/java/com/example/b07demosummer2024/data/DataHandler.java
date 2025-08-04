@@ -246,8 +246,11 @@ public class DataHandler {
     }
 
     public static Date stringToDate(String s) {
+        Log.d("Data", "Raw string: " + s);
         String cleaned = s.replaceAll("[\\[\\]\"]", "").replace("\\/", "/");
+        Log.d("Data", "Parsed string: " + cleaned);
         String[] components = cleaned.split(String.valueOf(Date.sep));
+        Log.d("Data", "Split string: " + Arrays.toString(components));
 
         int day = Integer.parseInt(components[0]);
         int month = Integer.parseInt(components[1]);

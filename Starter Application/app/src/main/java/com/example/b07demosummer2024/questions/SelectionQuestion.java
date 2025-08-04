@@ -44,9 +44,6 @@ public class SelectionQuestion extends Question {
 
     @Override
     public void updateBranch() {
-        Log.d("Selection", "self=" + branchLayout);
-        Log.d("Selection", "parent=" + branchLayout.getParent());
-
         if (branches.isEmpty()) {
             return;
         }
