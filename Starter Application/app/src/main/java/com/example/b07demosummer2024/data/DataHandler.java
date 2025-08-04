@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.b07demosummer2024.questions.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -177,6 +178,11 @@ public class DataHandler {
                 replacement = "[missing answer]";
             } else if (values.size() == 1) {
                 replacement = values.get(0).replaceAll("\"", "");
+                assert varName != null;
+                if (varName.equals("leave_timing")) {
+                    Date date = DataHandler.stringToDate(replacement);
+                    replacement = date.getDate();
+                }
             } else {
                 replacement = joinWithCommasAnd(values);
             }
@@ -223,15 +229,29 @@ public class DataHandler {
         return parsed;
     }
 
-    public static Date stringToDate(String s) {
-        String[] components = s.substring(1, s.length() - 1).split(String.valueOf(Date.sep));
-        Integer day = Integer.getInteger(components[0]);
-        Integer month = Integer.getInteger(components[1]);
-        Integer year = Integer.getInteger(components[2]);
+    public static String cleanString(String s) {
+        if (s == null || s.length() < 2) {
+            return "";
+        }
 
-        assert day != null;
-        assert month != null;
-        assert year != null;
+        String trimmed = s.substring(1, s.length() - 1);
+        String[] parts = trimmed.split(",");
+
+        List<String> cleaned = new ArrayList<>();
+        for (String part : parts) {
+            cleaned.add(part.replaceAll("^\"|\"$", "").trim());
+        }
+
+        return String.join(", ", cleaned);
+    }
+
+    public static Date stringToDate(String s) {
+        String cleaned = s.replaceAll("[\\[\\]\"]", "").replace("\\/", "/");
+        String[] components = cleaned.split(String.valueOf(Date.sep));
+
+        int day = Integer.parseInt(components[0]);
+        int month = Integer.parseInt(components[1]);
+        int year = Integer.parseInt(components[2]);
 
         return new Date(day, month, year);
     }

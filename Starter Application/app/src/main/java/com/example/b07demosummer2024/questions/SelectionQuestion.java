@@ -34,6 +34,7 @@ public class SelectionQuestion extends Question {
     }
 
     public void buildWidget(Context context, String defaultValue) {
+        Log.d("abcde", "building widget for: " + statement);
         this.widget = new CheckboxWidget(context, statement, response, choices);
         if (defaultValue != null) {
             this.widget.setDisplay(defaultValue);
