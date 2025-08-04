@@ -55,6 +55,13 @@ dependencies {
     implementation(libs.legacy.support.v4)
     implementation(libs.recyclerview)
     testImplementation(libs.junit)
+    // Unit testing dependencies
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.mockito:mockito-core:5.18.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
+// if you need to mock final classes
+    testImplementation("org.jetbrains:annotations:26.0.2")
+// for @NotNull, @Nullable
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
