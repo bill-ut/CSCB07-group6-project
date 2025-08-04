@@ -72,7 +72,7 @@ public class CheckboxWidget extends Widget {
 
         for (CheckBox checkbox : checkboxes) {
             if (responses.contains(checkbox.getText().toString())) {
-                checkbox.setSelected(true);
+                checkbox.setChecked(true);
             }
         }
     }

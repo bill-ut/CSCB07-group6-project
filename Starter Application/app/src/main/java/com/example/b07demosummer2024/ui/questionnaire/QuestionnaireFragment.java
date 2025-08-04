@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.b07demosummer2024.R;
+import com.example.b07demosummer2024.data.DataHandler;
 import com.example.b07demosummer2024.data.JsonReader;
 import com.example.b07demosummer2024.questions.Question;
 import com.example.b07demosummer2024.questions.response.Response;
@@ -59,77 +60,80 @@ public class QuestionnaireFragment extends Fragment {
         @Nullable Bundle savedInstanceState
     ) {
         super.onViewCreated(view, savedInstanceState);
-
-        if (getView() == null) {
-            Log.e("QuestionnaireFragment", "View not found");
-        }
-
-        layout = getView().findViewById(R.id.questionnaireLayout);
-
-        this.branchQuestions = JsonReader.getQuestionMap(getContext(), BRANCH_QUESTIONS);
-
-        this.questions = JsonReader.getQuestionMap(getContext(), QUESTIONS_FILE);
-        this.followupQuestions = JsonReader.getQuestionMap(getContext(), FOLLOWUP_QUESTIONS);
-
-        // setup questions
-        addHeader("Section 1:");
-        setupQuestions(questions);
-        header2 = addHeader("Section 2:");
-        Question first = questions.firstEntry().getValue();
-        layout.removeView(first.getBranchLayout());
-        layout.addView(first.getBranchLayout(), layout.indexOfChild(header2) + 1);
-        addHeader("Section 3:");
-        setupQuestions(followupQuestions);
-
-        Log.d("Questionnaire", "Array size: " + questions.size());
-
-        View submitButton = view.findViewById(R.id.submitAnswersButton);
-        View.OnClickListener saver = v -> {
-            if (!Question.areAllValid(questions) &&
-                !Question.areAllValid(branchQuestions) &&
-                !Question.areAllValid(followupQuestions)) {
-                Toast.makeText(getContext(), "Invalid response to one or more questions", Toast.LENGTH_SHORT).show();
-                return;
+        new DataHandler(getContext(), dh -> {
+            if (getView() == null) {
+                Log.e("QuestionnaireFragment", "View not found");
             }
 
-            Map<String, Response> answers = new LinkedHashMap<>();
+            layout = getView().findViewById(R.id.questionnaireLayout);
 
-            List<Map<String, Question>> allQuestions = Arrays.asList(
-                    questions,
-                    branchQuestions,
-                    followupQuestions
-            );
+            this.branchQuestions = JsonReader.getQuestionMap(getContext(), BRANCH_QUESTIONS);
 
-            for (Map<String, Question> questionMap : allQuestions) {
-                for (Map.Entry<String, Question> entry : questionMap.entrySet()) {
-                    Question q = entry.getValue();
-                    q.setResponse(); // updates internal response from UI
-                    if (q.getResponse() != null) {
-                        answers.put(entry.getKey(), q.getResponse());
+            this.questions = JsonReader.getQuestionMap(getContext(), QUESTIONS_FILE);
+            this.followupQuestions = JsonReader.getQuestionMap(getContext(), FOLLOWUP_QUESTIONS);
+
+            // setup questions
+            addHeader("Section 1:");
+            setupQuestions(questions, dh);
+            header2 = addHeader("Section 2:");
+            Question first = questions.firstEntry().getValue();
+            layout.removeView(first.getBranchLayout());
+            layout.addView(first.getBranchLayout(), layout.indexOfChild(header2) + 1);
+            addHeader("Section 3:");
+            setupQuestions(followupQuestions, dh);
+
+
+            Log.d("Questionnaire", "Array size: " + questions.size());
+
+            View submitButton = view.findViewById(R.id.submitAnswersButton);
+            View.OnClickListener saver = v -> {
+                if (!Question.areAllValid(questions) &&
+                        !Question.areAllValid(branchQuestions) &&
+                        !Question.areAllValid(followupQuestions)) {
+                    Toast.makeText(getContext(), "Invalid response to one or more questions", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Map<String, Response> answers = new LinkedHashMap<>();
+
+                List<Map<String, Question>> allQuestions = Arrays.asList(
+                        questions,
+                        branchQuestions,
+                        followupQuestions
+                );
+
+                for (Map<String, Question> questionMap : allQuestions) {
+                    for (Map.Entry<String, Question> entry : questionMap.entrySet()) {
+                        Question q = entry.getValue();
+                        q.setResponse(); // updates internal response from UI
+                        if (q.getResponse() != null) {
+                            answers.put(entry.getKey(), q.getResponse());
+                        }
                     }
                 }
-            }
 
-            AnswerSaver.saveAllAnswers(answers);
-            Toast.makeText(getContext(), "Answers saved successfully!", Toast.LENGTH_SHORT).show();
-        };
+                AnswerSaver.saveAllAnswers(answers);
+                Toast.makeText(getContext(), "Answers saved successfully!", Toast.LENGTH_SHORT).show();
+            };
 
-        submitButton.setOnClickListener(saver);
+            submitButton.setOnClickListener(saver);
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
-    private void setupQuestions(LinkedHashMap<String, Question> questionList) {
+    private void setupQuestions(LinkedHashMap<String, Question> questionList, DataHandler dh) {
 
         for (Question q: questionList.values()) {
-            setupQuestion(q, false);
+            setupQuestion(q, false, dh);
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
-    private void setupQuestion(Question q, boolean isBranch) {
-        String savedResponse = null; // TODO: read from db
-        q.setResponseValue(savedResponse);
+    private void setupQuestion(Question q, boolean isBranch, DataHandler dh) {
+        String savedResponse = DataHandler.cleanString(dh.getAnswerByQuestion(q).toString());
+
         q.buildWidget(getContext(), savedResponse);
+        q.setResponseValue(savedResponse);
         q.buildBranch(getContext());
 
         if (!q.getBranches().isEmpty()) {
@@ -137,7 +141,7 @@ public class QuestionnaireFragment extends Fragment {
                 Question branchQuestion = branchQuestions.get(entry.getKey());
                 entry.setValue(new Pair<>(entry.getValue().first, branchQuestion));
                 assert branchQuestion != null;
-                setupQuestion(branchQuestion, true);
+                setupQuestion(branchQuestion, true, dh);
             }
         }
 
@@ -146,6 +150,9 @@ public class QuestionnaireFragment extends Fragment {
             layout.addView(q.getBranchLayout(),
                     layout.indexOfChild(q.getWidget().getView()) + 1);
         }
+
+        q.updateBranch();
+        q.getWidget().updateNotes(q.getResponse());
     }
 
     private TextView addHeader(String header) {

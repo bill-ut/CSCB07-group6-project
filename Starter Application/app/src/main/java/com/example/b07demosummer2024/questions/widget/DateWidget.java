@@ -51,9 +51,9 @@ public class DateWidget extends Widget {
     public void setDisplay(String response) {
         Date dateResponse = DataHandler.stringToDate(response);
         ((DatePicker) this.widget).updateDate(
-                dateResponse.getDay(),
+                dateResponse.getYear(),
                 dateResponse.getMonth(),
-                dateResponse.getYear()
+                dateResponse.getDay()
         );
     }
 

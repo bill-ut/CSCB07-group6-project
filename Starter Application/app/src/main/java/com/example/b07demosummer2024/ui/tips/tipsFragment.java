@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.b07demosummer2024.data.Date;
 import com.example.b07demosummer2024.data.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
