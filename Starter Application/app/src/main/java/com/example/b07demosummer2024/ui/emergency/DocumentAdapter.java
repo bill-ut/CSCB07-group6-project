@@ -35,15 +35,17 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView documentName;
         public Button editButton, deleteButton;
-        public ImageView fileIndicator;
         public TextView documentDescription;
+        public TextView fileAttachedText;
+        public Button viewFileButton;
 
         public ViewHolder(View view) {
             super(view);
             documentName = view.findViewById(R.id.documentNameText);
+            fileAttachedText = view.findViewById(R.id.fileAttachedText);
+            viewFileButton = view.findViewById(R.id.viewFileButton);
             editButton = view.findViewById(R.id.editButton);
             deleteButton = view.findViewById(R.id.deleteButton);
-            fileIndicator = view.findViewById(R.id.fileIndicator);
             documentDescription = view.findViewById(R.id.documentDescriptionText);
         }
     }
@@ -60,6 +62,8 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
     public void onBindViewHolder(@NonNull DocumentAdapter.ViewHolder holder, int position) {
         Document document = documentList.get(position);
         holder.documentName.setText(document.getDocumentName());
+
+        // Handle description
         if (holder.documentDescription != null) {
             String description = document.getDescription();
             if (description != null && !description.isEmpty()) {
@@ -69,17 +73,18 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
                 holder.documentDescription.setVisibility(View.GONE);
             }
         }
-        if (holder.fileIndicator != null) {
-            if (document.hasFile()) {
-                holder.fileIndicator.setVisibility(View.VISIBLE);
-                holder.fileIndicator.setOnClickListener(v -> {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(document.getFileUrl()));
-                    v.getContext().startActivity(browserIntent);
-                });
-            } else {
-                holder.fileIndicator.setVisibility(View.GONE);
-                holder.fileIndicator.setOnClickListener(null);
-            }
+
+        // Handle file attachment - NEW
+        if (document.hasFile()) {
+            holder.fileAttachedText.setVisibility(View.VISIBLE);
+            holder.viewFileButton.setVisibility(View.VISIBLE);
+            holder.viewFileButton.setOnClickListener(v -> {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(document.getFileUrl()));
+                v.getContext().startActivity(browserIntent);
+            });
+        } else {
+            holder.fileAttachedText.setVisibility(View.GONE);
+            holder.viewFileButton.setVisibility(View.GONE);
         }
 
         if (listener != null) {
