@@ -1,7 +1,6 @@
 package com.example.b07demosummer2024.questions;
 
 import android.content.Context;
-import android.util.Log;
 import android.util.Pair;
 import android.widget.LinearLayout;
 
@@ -10,98 +9,177 @@ import androidx.annotation.NonNull;
 import com.example.b07demosummer2024.questions.response.Response;
 import com.example.b07demosummer2024.questions.widget.Widget;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+/**
+ * Generic class which represents a general question type.
+ */
 public abstract class Question {
     protected final String id;
     protected final String statement;
     protected Response response;
     protected Widget widget;
-    LinkedHashMap<String, Pair<String, Question>> branches; // maps id to <response, question>
-    LinearLayout branchLayout;
+    protected LinkedHashMap<String, Pair<String, Question>> branches; // maps id to <response, question>
+    protected LinearLayout branchLayout;
 
-    public Question(String statement, String id) {
+    /**
+     * Constructor for for the base <code>Question</code> class. Sets default values for shared data
+     * across the question subclasses.
+     *
+     * @param statement The statement of the question to be displayed.
+     * @param id The underlying question id used for I/O.
+     */
+    protected Question(String statement, String id) {
         this.id = id;
         this.statement = statement;
         this.response = null;
         this.branches = new LinkedHashMap<>();
     }
 
-    public abstract boolean isValid();
-
-    public static boolean areAllValid(LinkedHashMap<String, Question> questions) {
+    /**
+     * Determines whether the <code>LinkedHashMap</code> of <code>Question</code>'s has an invalid response.
+     * Validity is determined on each iteration using {@link #isValid()}.
+     *
+     * @param questions The hash map of questions to verify.
+     * @return <code>true</code> iff all questions are valid according to {@link #isValid()},
+     * <code>false</code> otherwise.
+     */
+    public static boolean hasInvalid(LinkedHashMap<String, Question> questions) {
         for (Question q: questions.values()) {
             if (!q.isValid())
-                return false;
+                return true;
         }
-        return true;
+        return false;
     }
 
-    public Response getResponse() {
-        return response;
-    }
+    /**
+     * Determines whether the stored response to the question is valid or not. To be
+     * implemented by subclasses depending on what type of response is stored.
+     *
+     * @return <code>true</code> iff the response is valid, <code>false</code> otherwise
+     */
+    public abstract boolean isValid();
 
-    public void setResponse() {
-        widget.setResponseValue(response);
-    }
-    public String getId() {
-        return id;
-    }
+    /**
+     * Builds a {@link com.example.b07demosummer2024.questions.widget.Widget}
+     * object in the given <code>context</code>. Sets up all necessary tools to display, modify and
+     * retrieve data from the user.
+     *
+     * @param context The context the widget should be placed in.
+     * @param defaultValue A default response to be displayed and locally stored.
+     */
+    public abstract void buildWidget(Context context, String defaultValue);
 
-    public void setResponseValue(String value) {
-        response.setValue(value);
-    }
+    /**
+     * Callback method to update the display state of branched questions in <code>branches</code>.
+     * Implementation depends on type of {@link com.example.b07demosummer2024.questions.Question}.
+     */
+    public abstract void updateBranch();
 
+    /**
+     * Generic callback to be invoked on user interaction with the question elements. Updates the
+     * states of the corresponding widgets and display elements along with locally updating the
+     * user's response.
+     *
+     * @see  #setResponse()
+     * @see com.example.b07demosummer2024.questions.widget.Widget#updateNotes(Response)
+     * @see #updateBranch()
+     */
     public void handler() {
         setResponse();
         widget.updateNotes(response);
         updateBranch();
     }
 
-    public String getStatement() {
-        return statement;
+    /**
+     * @return a string representation for debugging purposes.
+     */
+    @NonNull
+    @Override
+    public String toString() {
+        return "<Question: id=" + id + ", Statement=" + statement + ">";
     }
 
-    public abstract void buildWidget(Context context, String defaultValue);
-
-    public Widget getWidget() {
-        return this.widget;
-    }
-
-    public abstract void updateBranch();
-
-    public ArrayList<Response> getBranchedResponses() {
-        ArrayList<Response> responses = new ArrayList<>();
-        if (!branches.isEmpty()) {
-            branches.forEach(
-                    (k,v) -> responses.add(v.second.getResponse())
-            );
-            return responses;
-        }
-        return null;
-    }
-
+    /**
+     * Inserts a new question into <code>branches</code>.
+     *
+     * @param linkedResponse The response that corresponds to the new branch.
+     * @param id The id of the new question.
+     * @param question The question object.
+     */
     public void addBranch(String linkedResponse, String id, final Question question) {
         branches.put(id, new Pair<>(linkedResponse, question));
     }
 
-    public LinkedHashMap<String, Pair<String, Question>> getBranches() {
-        return branches;
+    /**
+     * Gets the question id.
+     */
+    public String getId() {
+        return id;
     }
 
+    /**
+     * Gets the question statement.
+     */
+    public String getStatement() {
+        return statement;
+    }
+
+    /**
+     * Internally updates <code>response</code> using the users response; delegates responsibility
+     * to {@link com.example.b07demosummer2024.questions.widget.Widget#setResponseValue(Response)}.
+     */
+    public void setResponse() {
+        widget.setResponseValue(response);
+    }
+
+    /**
+     * Internally sets stored value of <code>response</code> by delegating responsibility to
+     * {@link com.example.b07demosummer2024.questions.response.Response#setValue(String)}. In
+     * contrast to {@link #setResponse()}, this method updates the <code>Response</code> object
+     * directly without retrieval from <code>widget</code>.
+     *
+     * @param value What to set <code>response</code> to.
+     */
+    public void setResponseValue(String value) {
+        response.setValue(value);
+    }
+
+    /**
+     * Gets the local user response.
+     */
+    public Response getResponse() {
+        return response;
+    }
+
+    /**
+     * Gets the display widget.
+     */
+    public Widget getWidget() {
+        return this.widget;
+    }
+
+    /**
+     * Initializes the display element for branches.
+     *
+     * @param context The context for displaying.
+     */
     public void buildBranch(Context context) {
         branchLayout = new LinearLayout(context);
         branchLayout.setOrientation(LinearLayout.VERTICAL);
     }
 
-    public LinearLayout getBranchLayout() {
-        return branchLayout;
+    /**
+     * Gets the <code>LinkedHashMap</code> of branched questions.
+     */
+    public LinkedHashMap<String, Pair<String, Question>> getBranches() {
+        return branches;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return "<Question: id=" + id + ", Statement=" + statement + ">";
+    /**
+     * Gets the display layout which displays branches.
+     */
+    public LinearLayout getBranchLayout() {
+        return branchLayout;
     }
 }
