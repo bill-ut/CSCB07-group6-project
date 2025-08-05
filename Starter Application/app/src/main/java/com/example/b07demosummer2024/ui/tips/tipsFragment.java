@@ -65,17 +65,45 @@ public class tipsFragment extends Fragment {
             ArrayList<String> strings = new ArrayList<>();
             ArrayList<Integer> images = new ArrayList<>();
 
+            LinkedHashMap<String, Question> questionsMap = JsonReader.getQuestionMap(getContext(), QUESTION_JSONS[0]);
+            LinkedHashMap<String, Question> questionsBranchesMap = JsonReader.getQuestionMap(getContext(), QUESTION_JSONS[1]);
+            LinkedHashMap<String, Question> questionsFollowupMap = JsonReader.getQuestionMap(getContext(), QUESTION_JSONS[2]);
+            ArrayList<String> toInclude = new ArrayList<>();
+
+            for (Question q : questionsMap.values()) {
+                toInclude.add(q.getId());
+
+                ArrayList<String> branches = dh.getBranchIdsByQuestion(q);
+                if (!branches.isEmpty()) {
+                    toInclude.addAll(branches);
+                }
+            }
+            for (Question q : questionsBranchesMap.values()) {
+                if (toInclude.contains(q.getId())) {
+                    ArrayList<String> branches = dh.getBranchIdsByQuestion(q);
+                    if (!branches.isEmpty()) {
+                        toInclude.addAll(branches);
+                    }
+                }
+            }
+
+            for (Question q : questionsFollowupMap.values()) {
+                toInclude.add(q.getId());
+            }
+
             for (String json : QUESTION_JSONS) {
                 LinkedHashMap<String, Question> questionMap = JsonReader.getQuestionMap(getContext(), json);
                 for (Question q : questionMap.values()) {
-                    String tip = dh.getTipByQuestion(q);
-                    if (tip != null && !tip.isEmpty()) {
-                        strings.add(tip);
-                        int resId = getContext().getResources().getIdentifier(q.getId(), "drawable", getContext().getPackageName());
-                        if (resId != 0) {
-                            images.add(resId);
-                        } else {
-                            images.add(R.drawable.no_image_found);
+                    if (toInclude.contains(q.getId())) {
+                        String tip = dh.getTipByQuestion(q);
+                        if (tip != null && !tip.isEmpty()) {
+                            strings.add(tip);
+                            int resId = getContext().getResources().getIdentifier(q.getId(), "drawable", getContext().getPackageName());
+                            if (resId != 0) {
+                                images.add(resId);
+                            } else {
+                                images.add(R.drawable.no_image_found);
+                            }
                         }
                     }
                 }
