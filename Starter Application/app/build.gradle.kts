@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.legacy.support.v4)
     implementation(libs.recyclerview)
+    implementation(libs.cardview)
     testImplementation(libs.junit)
     // Unit testing dependencies
     testImplementation("junit:junit:4.13.2")
