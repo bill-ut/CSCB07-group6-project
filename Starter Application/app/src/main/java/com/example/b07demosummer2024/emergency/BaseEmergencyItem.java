@@ -1,22 +1,38 @@
 package com.example.b07demosummer2024.emergency;
 
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public abstract class BaseEmergencyItem implements EmergencyInfoItem {
     protected String id;
     protected String title;
-    protected long createdAt;
-    protected long updatedAt;
+    protected String createdAt;
+    protected String updatedAt;
 
     public BaseEmergencyItem() {
-        this.createdAt = System.currentTimeMillis();
-        this.updatedAt = System.currentTimeMillis();
+        this.id = UUID.randomUUID().toString();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String currentDateTime = sdf.format(new Date());
+
+        this.createdAt = currentDateTime;
+        this.updatedAt = currentDateTime;
     }
 
     public BaseEmergencyItem(String title) {
-        this();
+        this.id = UUID.randomUUID().toString();
         this.title = title;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String currentDateTime = sdf.format(new Date());
+
+        this.createdAt = currentDateTime;
+        this.updatedAt = currentDateTime;
     }
 
     @Override
@@ -30,16 +46,21 @@ public abstract class BaseEmergencyItem implements EmergencyInfoItem {
 
     public void setTitle(String title) { this.title = title; }
 
-    @Override
-    public long getCreatedAt() { return createdAt; }
+    public String getCreatedAt() {
+        return createdAt;
+    }
 
-    public void setCreatedAt(long createdAt) { this.createdAt = createdAt; }
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
 
-    @Override
-    public long getUpdatedAt() { return updatedAt; }
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
 
-    @Override
-    public void setUpdatedAt(long updatedAt) { this.updatedAt = updatedAt; }
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     @Override
     public Map<String, Object> toMap() {

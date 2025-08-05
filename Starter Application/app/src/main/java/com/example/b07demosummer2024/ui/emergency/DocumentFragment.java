@@ -1,6 +1,9 @@
 package com.example.b07demosummer2024.ui.emergency;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +25,10 @@ import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.data.EmergencyInfoRepository;
 import com.example.b07demosummer2024.data.FirebaseEmergencyRepository;
 import com.example.b07demosummer2024.emergency.Document;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +37,12 @@ public class DocumentFragment extends Fragment {
 
     private DocumentAdapter adapter;
     private FirebaseEmergencyRepository<Document> repository;
+    private static final int PICK_FILE_REQUEST = 1;
+    private Uri selectedFileUri = null;
+    private String selectedFileName = null;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
+    private TextView currentSelectedFileText;
 
     @Nullable
     @Override
@@ -47,6 +61,10 @@ public class DocumentFragment extends Fragment {
         try {
             // Initialize repository
             repository = new FirebaseEmergencyRepository<>("documents", Document.class);
+
+            // Initialize Firebase Storage
+            storage = FirebaseStorage.getInstance();
+            storageRef = storage.getReference();
 
             // Setup RecyclerView
             RecyclerView recyclerView = view.findViewById(R.id.documentRecycler);
@@ -98,23 +116,66 @@ public class DocumentFragment extends Fragment {
     }
 
     private void showAddDocumentDialog() {
-        EditText input = new EditText(getContext());
-        input.setHint("Document name (e.g., Passport, Birth Certificate)");
+        selectedFileUri = null;
+        selectedFileName = null;
 
-        new AlertDialog.Builder(getContext())
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_document, null);
+        EditText nameInput = dialogView.findViewById(R.id.documentNameInput);
+        EditText descriptionInput = dialogView.findViewById(R.id.documentDescriptionInput);
+        TextView selectedFileText = dialogView.findViewById(R.id.selectedFileText);
+        Button attachFileButton = dialogView.findViewById(R.id.attachFileButton);
+
+        attachFileButton.setEnabled(true);
+        attachFileButton.setText("Attach File (PDF/Image)");
+
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setTitle("Add Document to Pack")
-                .setView(input)
-                .setPositiveButton("Add", (dialog, which) -> {
-                    String documentName = input.getText().toString().trim();
-                    if (!documentName.isEmpty()) {
-                        Document document = new Document(documentName);
-                        addDocument(document);
-                    } else {
-                        Toast.makeText(getContext(), "Please enter a document name", Toast.LENGTH_SHORT).show();
-                    }
-                })
+                .setView(dialogView)
+                .setPositiveButton("Add", null)
                 .setNegativeButton("Cancel", null)
-                .show();
+                .create();
+
+        attachFileButton.setOnClickListener(v -> {
+            currentSelectedFileText = selectedFileText;
+            openFilePicker();
+        });
+
+        dialog.setOnShowListener(dialogInterface -> {
+            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(v -> {
+                String documentName = nameInput.getText().toString().trim();
+                if (!documentName.isEmpty()) {
+                    Document document = new Document(documentName);
+                    document.setDescription(descriptionInput.getText().toString().trim());
+
+                    if (selectedFileUri != null) {
+                        dialog.dismiss();
+                        Toast.makeText(getContext(), "Uploading file...", Toast.LENGTH_SHORT).show();
+
+                        uploadFileToStorage(selectedFileUri, selectedFileName, new OnFileUploadListener() {
+                            @Override
+                            public void onSuccess(String downloadUrl) {
+                                document.setFileUrl(downloadUrl);
+                                document.setFileName(selectedFileName);
+                                addDocument(document);
+                            }
+
+                            @Override
+                            public void onFailure(String error) {
+                                Toast.makeText(getContext(), "Upload failed: " + error, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        addDocument(document);
+                        dialog.dismiss();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Please enter a document name", Toast.LENGTH_SHORT).show();
+                }
+            });;
+        });
+
+        dialog.show();
     }
 
     private void addDocument(Document document) {
@@ -134,23 +195,73 @@ public class DocumentFragment extends Fragment {
     }
 
     private void showEditDocumentDialog(Document document) {
-        EditText input = new EditText(getContext());
-        input.setText(document.getDocumentName());
+        selectedFileUri = null;
+        selectedFileName = null;
 
-        new AlertDialog.Builder(getContext())
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_document, null);
+        EditText nameInput = dialogView.findViewById(R.id.documentNameInput);
+        EditText descriptionInput = dialogView.findViewById(R.id.documentDescriptionInput);
+        TextView selectedFileText = dialogView.findViewById(R.id.selectedFileText);
+        Button attachFileButton = dialogView.findViewById(R.id.attachFileButton);
+
+        nameInput.setText(document.getDocumentName());
+        descriptionInput.setText(document.getDescription() != null ? document.getDescription() : "");
+
+        if (document.hasFile()) {
+            selectedFileText.setText("Current file: " + document.getFileName());
+            attachFileButton.setText("Replace File");
+        } else {
+            attachFileButton.setText("Attach File (PDF/Image)");
+        }
+
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setTitle("Edit Document")
-                .setView(input)
-                .setPositiveButton("Update", (dialog, which) -> {
-                    String documentName = input.getText().toString().trim();
-                    if (!documentName.isEmpty()) {
-                        document.setDocumentName(documentName);
-                        updateDocument(document);
-                    } else {
-                        Toast.makeText(getContext(), "Please enter a document name", Toast.LENGTH_SHORT).show();
-                    }
-                })
+                .setView(dialogView)
+                .setPositiveButton("Update", null)
                 .setNegativeButton("Cancel", null)
-                .show();
+                .create();
+
+        attachFileButton.setOnClickListener(v -> {
+            currentSelectedFileText = selectedFileText;
+            openFilePicker();
+        });
+
+        dialog.setOnShowListener(dialogInterface -> {
+            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(v -> {
+                String documentName = nameInput.getText().toString().trim();
+                if (!documentName.isEmpty()) {
+                    document.setDocumentName(documentName);
+                    document.setDescription(descriptionInput.getText().toString().trim());
+
+                    if (selectedFileUri != null) {
+                        dialog.dismiss();
+                        Toast.makeText(getContext(), "Uploading new file...", Toast.LENGTH_SHORT).show();
+
+                        uploadFileToStorage(selectedFileUri, selectedFileName, new OnFileUploadListener() {
+                            @Override
+                            public void onSuccess(String downloadUrl) {
+                                document.setFileUrl(downloadUrl);
+                                document.setFileName(selectedFileName);
+                                updateDocument(document);
+                            }
+
+                            @Override
+                            public void onFailure(String error) {
+                                Toast.makeText(getContext(), "Upload failed: " + error, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        updateDocument(document);
+                        dialog.dismiss();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Please enter a document name", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+        dialog.show();
     }
 
     private void updateDocument(Document document) {
@@ -190,5 +301,62 @@ public class DocumentFragment extends Fragment {
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+    }
+    private void openFilePicker() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        String[] mimeTypes = {"application/pdf", "image/*"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+
+        startActivityForResult(Intent.createChooser(intent, "Select Document"), PICK_FILE_REQUEST);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_FILE_REQUEST && resultCode == Activity.RESULT_OK) {
+            if (data != null && data.getData() != null) {
+                selectedFileUri = data.getData();
+                String filename = "Selected file";
+                if (selectedFileUri.getLastPathSegment() != null) {
+                    filename = selectedFileUri.getLastPathSegment();
+                }
+                selectedFileName = filename;
+
+                if (currentSelectedFileText != null) {
+                    currentSelectedFileText.setText("Selected: " + filename);
+                }
+
+                Toast.makeText(getContext(), "File selected: " + filename, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    private void uploadFileToStorage(Uri fileUri, String fileName, OnFileUploadListener listener) {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Log.d("DocumentFragment", "User ID: " + userId);
+        String path = "documents/" + userId + "/" + System.currentTimeMillis() + "_" + fileName;
+        Log.d("DocumentFragment", "Uploading file to path: " + path);
+
+        StorageReference fileRef = storageRef.child(path);
+
+        fileRef.putFile(fileUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        listener.onSuccess(uri.toString());
+                    }).addOnFailureListener(e -> {
+                        listener.onFailure("Failed to get download URL: " + e.getMessage());
+                    });
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("DocumentFragment", "Upload error: " + e.getMessage());
+                    listener.onFailure("Upload failed: " + e.getMessage());
+                });
+    }
+
+    // Interface for upload callback
+    private interface OnFileUploadListener {
+        void onSuccess(String downloadUrl);
+        void onFailure(String error);
     }
 }

@@ -145,5 +145,5 @@
         android:label="Support Resources">
         <!-- optional actions if you want Back or deep-links -->
     </fragment>
-    
+
 </navigation>

@@ -9,8 +9,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class FirebaseEmergencyRepository<T extends EmergencyInfoItem>
         implements EmergencyInfoRepository<T> {
@@ -46,7 +49,8 @@ public class FirebaseEmergencyRepository<T extends EmergencyInfoItem>
         String key = ref.push().getKey();
         if (key != null) {
             item.setId(key);
-            item.setUpdatedAt(System.currentTimeMillis());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            item.setUpdatedAt(sdf.format(new Date()));
 
             ref.child(key).setValue(item.toMap())
                     .addOnSuccessListener(aVoid -> {
@@ -70,7 +74,8 @@ public class FirebaseEmergencyRepository<T extends EmergencyInfoItem>
             return;
         }
 
-        item.setUpdatedAt(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        item.setUpdatedAt(sdf.format(new Date()));
 
         ref.child(item.getId()).setValue(item.toMap())
                 .addOnSuccessListener(aVoid -> {
