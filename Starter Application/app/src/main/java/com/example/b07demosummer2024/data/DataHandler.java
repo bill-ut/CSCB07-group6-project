@@ -181,7 +181,7 @@ public class DataHandler {
                 assert varName != null;
                 if (varName.equals("leave_timing")) {
                     Date date = DataHandler.stringToDate(replacement);
-                    replacement = date.getDate();
+                    replacement = DataHandler.fixZeroIndexedMonth(date.getDate());
                 }
             } else {
                 replacement = joinWithCommasAnd(values);
@@ -257,5 +257,28 @@ public class DataHandler {
         int year = Integer.parseInt(components[2]);
 
         return new Date(day, month, year);
+    }
+
+    public static String fixZeroIndexedMonth(String dateStr) {
+        if (dateStr == null || dateStr.trim().isEmpty()) {
+            Log.d("DataHandler", "Input date string is null or empty.");
+        }
+
+        String[] parts = dateStr.split("/");
+
+        if (parts.length != 3) {
+            Log.d("DataHandler", "Invalid date format. Expected format: dd/MM/yyyy");
+        }
+
+        try {
+            int day = Integer.parseInt(parts[0].trim());
+            int month = Integer.parseInt(parts[1].trim()) + 1;  // fix the 0-indexed month
+            int year = Integer.parseInt(parts[2].trim());
+
+            return String.format("%02d/%02d/%04d", day, month, year);
+        } catch (NumberFormatException e) {
+            Log.d("DataHandler", "Date string contains non-numeric values.");
+            return null;
+        }
     }
 }
