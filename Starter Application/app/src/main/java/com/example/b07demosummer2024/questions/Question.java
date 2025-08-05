@@ -1,6 +1,7 @@
 package com.example.b07demosummer2024.questions;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.Pair;
 import android.widget.LinearLayout;
 

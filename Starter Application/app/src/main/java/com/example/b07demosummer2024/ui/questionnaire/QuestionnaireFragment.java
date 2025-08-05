@@ -20,6 +20,7 @@ import com.example.b07demosummer2024.data.JsonReader;
 import com.example.b07demosummer2024.questions.Question;
 import com.example.b07demosummer2024.questions.response.Response;
 import com.example.b07demosummer2024.AnswerSaver;
+import com.example.b07demosummer2024.questions.response.SingleResponse;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -106,6 +107,11 @@ public class QuestionnaireFragment extends Fragment {
                     for (Map.Entry<String, Question> entry : questionMap.entrySet()) {
                         Question q = entry.getValue();
                         q.setResponse(); // updates internal response from UI
+                        if (entry.getKey().equals("leave_timing")) {
+                            SingleResponse response = (SingleResponse) q.getResponse();
+                            if (response.getResponse().equals("0/0/0")) { continue; }
+                        }
+
                         if (q.getResponse() != null) {
                             answers.put(entry.getKey(), q.getResponse());
                         }
