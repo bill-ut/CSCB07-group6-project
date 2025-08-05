@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -33,12 +34,15 @@ public class ReminderFragment extends Fragment {
 
     private TimePicker timePicker;
     private Spinner frequencySpinner;
+    private EditText contentInput;
     private Button addReminderButton;
     private RecyclerView reminderList;
 
     private DatabaseReference remindersRef;
     private ReminderAdapter adapter;
     private List<Reminder> reminderItems = new ArrayList<>();
+
+    private Reminder currentlyEditingReminder = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,29 +51,50 @@ public class ReminderFragment extends Fragment {
 
         timePicker = view.findViewById(R.id.timePicker);
         frequencySpinner = view.findViewById(R.id.frequencySpinner);
+        contentInput = view.findViewById(R.id.contentInput);
         addReminderButton = view.findViewById(R.id.btnAddReminder);
         reminderList = view.findViewById(R.id.reminderList);
 
         timePicker.setIs24HourView(true);
 
-        // Spinner setup
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(
                 getContext(), R.array.reminder_frequencies, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         frequencySpinner.setAdapter(spinnerAdapter);
 
-        // Firebase setup
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         remindersRef = FirebaseDatabase.getInstance().getReference("reminders").child(uid);
 
-        // RecyclerView
-        adapter = new ReminderAdapter(reminderItems);
+        adapter = new ReminderAdapter(reminderItems, new ReminderAdapter.OnReminderActionListener() {
+            @Override
+            public void onEdit(Reminder reminder) {
+                String[] parts = reminder.time.split(":");
+                timePicker.setHour(Integer.parseInt(parts[0]));
+                timePicker.setMinute(Integer.parseInt(parts[1]));
+                frequencySpinner.setSelection(spinnerAdapter.getPosition(reminder.frequency));
+                contentInput.setText(reminder.content);
+                currentlyEditingReminder = reminder;
+                addReminderButton.setText("Update Reminder");
+            }
+
+            @Override
+            public void onDelete(Reminder reminder) {
+                remindersRef.child(reminder.id).removeValue();
+                cancelAlarm(reminder);
+            }
+        });
         reminderList.setLayoutManager(new LinearLayoutManager(getContext()));
         reminderList.setAdapter(adapter);
 
         loadReminders();
 
-        addReminderButton.setOnClickListener(v -> addReminder());
+        addReminderButton.setOnClickListener(v -> {
+            if (currentlyEditingReminder != null) {
+                updateReminder(currentlyEditingReminder);
+            } else {
+                addReminder();
+            }
+        });
 
         return view;
     }
@@ -98,14 +123,35 @@ public class ReminderFragment extends Fragment {
         int minute = timePicker.getMinute();
         String time = String.format("%02d:%02d", hour, minute);
         String frequency = frequencySpinner.getSelectedItem().toString();
+        String content = contentInput.getText().toString();
         String id = remindersRef.push().getKey();
 
-        if (TextUtils.isEmpty(id)) return;
+        if (TextUtils.isEmpty(id) || TextUtils.isEmpty(content)) return;
 
-        Reminder reminder = new Reminder(id, time, frequency);
+        Reminder reminder = new Reminder(id, time, frequency, content);
         remindersRef.child(id).setValue(reminder);
         scheduleAlarm(reminder, hour, minute);
         Toast.makeText(getContext(), "Reminder added", Toast.LENGTH_SHORT).show();
+    }
+
+    private void updateReminder(Reminder r) {
+        int hour = timePicker.getHour();
+        int minute = timePicker.getMinute();
+        String time = String.format("%02d:%02d", hour, minute);
+        String frequency = frequencySpinner.getSelectedItem().toString();
+        String content = contentInput.getText().toString();
+
+        r.time = time;
+        r.frequency = frequency;
+        r.content = content;
+
+        remindersRef.child(r.id).setValue(r);
+        cancelAlarm(r);
+        scheduleAlarm(r, hour, minute);
+        Toast.makeText(getContext(), "Reminder updated", Toast.LENGTH_SHORT).show();
+        currentlyEditingReminder = null;
+        addReminderButton.setText("Add Reminder");
+        contentInput.setText("");
     }
 
     private void scheduleAlarm(Reminder reminder, int hour, int minute) {
@@ -113,9 +159,11 @@ public class ReminderFragment extends Fragment {
         if (context == null) return;
 
         Intent intent = new Intent(context, ReminderReceiver.class);
-        intent.putExtra("reminderText", "Tap here to revisit your plan");
+        intent.putExtra("reminderText", reminder.content);
+        intent.setAction(reminder.id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                context, reminder.id.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                context, reminder.id.hashCode(), intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
@@ -137,5 +185,19 @@ public class ReminderFragment extends Fragment {
                 repeatInterval,
                 pendingIntent
         );
+    }
+
+    private void cancelAlarm(Reminder reminder) {
+        Context context = getContext();
+        if (context == null) return;
+
+        Intent intent = new Intent(context, ReminderReceiver.class);
+        intent.setAction(reminder.id);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                context, reminder.id.hashCode(), intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
     }
 }

@@ -16,6 +16,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <EditText
+        android:id="@+id/contentInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Reminder Content"
+        android:inputType="textMultiLine"
+        android:minLines="2"
+        android:gravity="top|start"
+        android:layout_marginTop="12dp"/>
+
     <Button
         android:id="@+id/btnAddReminder"
         android:layout_width="match_parent"
@@ -25,6 +35,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/reminderList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+
         android:paddingTop="16dp"/>
 </LinearLayout>
