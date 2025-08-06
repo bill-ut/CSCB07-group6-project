@@ -23,20 +23,6 @@ public abstract class Question {
     protected LinearLayout branchLayout;
 
     /**
-     * Constructor for for the base <code>Question</code> class. Sets default values for shared data
-     * across the question subclasses.
-     *
-     * @param statement The statement of the question to be displayed.
-     * @param id The underlying question id used for I/O.
-     */
-    protected Question(String statement, String id) {
-        this.id = id;
-        this.statement = statement;
-        this.response = null;
-        this.branches = new LinkedHashMap<>();
-    }
-
-    /**
      * Determines whether the <code>LinkedHashMap</code> of <code>Question</code>'s has an invalid response.
      * Validity is determined on each iteration using {@link #isValid()}.
      *
@@ -50,6 +36,20 @@ public abstract class Question {
                 return true;
         }
         return false;
+    }
+
+    /**
+     * Constructor for for the base <code>Question</code> class. Sets default values for shared data
+     * across the question subclasses.
+     *
+     * @param statement The statement of the question to be displayed.
+     * @param id The underlying question id used for I/O.
+     */
+    protected Question(String statement, String id) {
+        this.id = id;
+        this.statement = statement;
+        this.response = null;
+        this.branches = new LinkedHashMap<>();
     }
 
     /**
