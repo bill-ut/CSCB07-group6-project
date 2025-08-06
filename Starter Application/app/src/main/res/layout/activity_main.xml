@@ -41,13 +41,16 @@
 
     <Button
         android:id="@+id/emergencyExitButton"
+        android:clickable="true"
+        android:focusable="true"
+        android:elevation="100dp"
+        android:translationZ="100dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Exit"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:elevation="10dp" />
+        android:layout_marginEnd="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
