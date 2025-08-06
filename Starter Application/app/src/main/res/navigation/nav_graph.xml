@@ -86,6 +86,13 @@
         <action
             android:id="@+id/action_home_to_questionnaireFragment"
             app:destination="@id/questionnaireFragment" />
+        <action
+            android:id="@+id/action_home_to_tips"
+            app:destination="@id/tipsFragment" />
+        <action
+            android:id="@+id/action_home_to_support"
+            app:destination="@id/supportFragment"/>
+
     </fragment>
     <fragment
         android:id="@+id/questionnaireFragment"
@@ -93,6 +100,15 @@
         android:label="QuestionnaireFragment" >
         <action
             android:id="@+id/action_questionnaireFragment_to_home"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tipsFragment"
+        android:name="com.example.b07demosummer2024.ui.tips.tipsFragment"
+        android:label=" "
+        tools:layout="@layout/fragment_tips" >
+        <action
+            android:id="@+id/action_tips_to_home"
             app:destination="@id/homeFragment" />
     </fragment>
 
@@ -106,9 +122,18 @@
         <action
             android:id="@+id/action_emergencyInfoFragment_to_emergencyContactFragment"
             app:destination="@id/emergencyContactFragment" />
+        <action
+            android:id="@+id/action_emergencyInfoFragment_to_documentFragment"
+            app:destination="@id/documentFragment" />
+        <action
+            android:id="@+id/action_emergencyInfoFragment_to_safeLocationFragment"
+            app:destination="@id/safeLocationFragment" />
+        <action
+            android:id="@+id/action_emergencyInfoFragment_to_medicationFragment"
+            app:destination="@id/medicationFragment" />
     </fragment>
 
-    <!-- EMERGENCY CONTACT (required destination!) -->
+
     <fragment
         android:id="@+id/emergencyContactFragment"
         android:name="com.example.b07demosummer2024.ui.emergency.EmergencyContactFragment"
@@ -123,4 +148,25 @@
         <action
         android:id="@+id/action_homeFragment_to_reminderFragment"
         app:destination="@id/reminderFragment" />
+  
+    <fragment
+        android:id="@+id/documentFragment"
+        android:name="com.example.b07demosummer2024.ui.emergency.DocumentFragment"
+        android:label="Documents to Pack" />
+    <fragment
+        android:id="@+id/safeLocationFragment"
+        android:name="com.example.b07demosummer2024.ui.emergency.SafeLocationFragment"
+        android:label="Safe Locations" />
+    <fragment
+        android:id="@+id/medicationFragment"
+        android:name="com.example.b07demosummer2024.ui.emergency.MedicationFragment"
+        android:label="Medications" />
+
+    <fragment
+        android:id="@+id/supportFragment"
+        android:name="com.example.b07demosummer2024.ui.support.SupportFragment"
+        android:label="Support Resources">
+        <!-- optional actions if you want Back or deep-links -->
+    </fragment>
+
 </navigation>

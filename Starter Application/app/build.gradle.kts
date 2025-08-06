@@ -44,6 +44,8 @@ dependencies {
 
     implementation("androidx.security:security-crypto:1.1.0-alpha03")
 
+    implementation("com.google.code.gson:gson:2.13.1")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -52,7 +54,15 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.legacy.support.v4)
     implementation(libs.recyclerview)
+    implementation(libs.cardview)
     testImplementation(libs.junit)
+    // Unit testing dependencies
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.mockito:mockito-core:5.18.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
+// if you need to mock final classes
+    testImplementation("org.jetbrains:annotations:26.0.2")
+// for @NotNull, @Nullable
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }

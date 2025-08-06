@@ -20,6 +20,8 @@ import android.os.Build;
 import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import android.widget.Toast;
+import android.os.Handler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -79,9 +81,15 @@ public class MainActivity extends AppCompatActivity {
 
         Button exitButton = findViewById(R.id.emergencyExitButton);
         exitButton.setOnClickListener(v -> {
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://www.google.com")));
+            // Launch browser
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
+            // Force complete termination
             finishAffinity();
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(0);
         });
     }
 

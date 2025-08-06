@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">B07 Group 6 Project</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="delete_item">Delete Item</string>
     <string name="add_item">Add Item</string>
@@ -111,5 +110,19 @@
         <item>Monthly</item>
     </string-array>
 
+
+    <string name="no_tips">No tips.</string>
+
+    <!-- Questionnaire -->
+    <string name="submission">Submit Answers</string>
+
+    <!-- Warning Messages -->
+    <string name="text_warning">* Field is empty</string>
+    <string name="spinner_warning">* Select one option</string>
+    <string name="date_warning">* Please enter a date</string>
+    <plurals name="checkbox_warning">
+        <item quantity="one">* Select %1$d option</item>
+        <item quantity="other">* Select up to %1$d options</item>
+    </plurals>
 
 </resources>

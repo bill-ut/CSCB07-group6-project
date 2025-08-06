@@ -3,12 +3,18 @@ package com.example.b07demosummer2024.questions.response;
 public class SingleResponse extends Response {
     private String response;
 
-    public SingleResponse() {
-        this.response = "";
+    @Override
+    public boolean isEmpty() {
+        return response.isEmpty();
     }
 
-    public SingleResponse(String response) {
-        this.response = response;
+    @Override
+    public boolean isValid() {
+        return !isEmpty();
+    }
+
+    public SingleResponse() {
+        this.response = "";
     }
 
     public String getResponse() {
@@ -17,5 +23,10 @@ public class SingleResponse extends Response {
 
     public void setResponse(String response) {
         this.response = response;
+    }
+
+    @Override
+    public void setValue(String value) {
+        this.response = value;
     }
 }

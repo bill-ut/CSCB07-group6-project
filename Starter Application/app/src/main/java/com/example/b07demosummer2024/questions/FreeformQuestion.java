@@ -1,12 +1,9 @@
 package com.example.b07demosummer2024.questions;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.widget.EditText;
 
 import com.example.b07demosummer2024.questions.response.SingleResponse;
+import com.example.b07demosummer2024.questions.widget.DateWidget;
 import com.example.b07demosummer2024.questions.widget.TextWidget;
 
 public class FreeformQuestion extends Question {
@@ -19,17 +16,26 @@ public class FreeformQuestion extends Question {
     }
 
     @Override
-    public void setResponse() {
-        ((SingleResponse) this.response).setResponse(
-                ((EditText) this.widget.getView()).getText().toString().trim()
-        );
-
-        Log.d("Freeform Question", "Set Response: " + ((SingleResponse) this.response).getResponse());
+    public boolean isValid() {
+        return !response.isEmpty();
     }
 
     @Override
-    public void buildWidget(Context context) {
-        this.widget = new TextWidget(context);
-        this.widget.setHandler(this::setResponse);
+    public void buildWidget(Context context, String defaultValue) {
+        if (type.equals("text"))
+            this.widget = new TextWidget(context, statement, response);
+        else
+            this.widget = new DateWidget(context, statement, response);
+
+        if (defaultValue != null && !defaultValue.isEmpty()) {
+            this.widget.setDisplay(defaultValue);
+        }
+
+        this.widget.setHandler(this::handler);
+    }
+
+    @Override
+    public void updateBranch() {
+        // does nothing, FreeformQuestions have no branching logic
     }
 }
