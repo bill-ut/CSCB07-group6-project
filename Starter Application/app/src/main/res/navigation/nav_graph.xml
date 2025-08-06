@@ -138,6 +138,17 @@
         android:id="@+id/emergencyContactFragment"
         android:name="com.example.b07demosummer2024.ui.emergency.EmergencyContactFragment"
         android:label="Emergency Contact" />
+
+    <fragment
+        android:id="@+id/reminderFragment"
+        android:name="com.example.b07demosummer2024.ui.reminder.ReminderFragment"
+        android:label="Reminders"
+        tools:layout="@layout/fragment_reminders"/>
+
+        <action
+        android:id="@+id/action_homeFragment_to_reminderFragment"
+        app:destination="@id/reminderFragment" />
+  
     <fragment
         android:id="@+id/documentFragment"
         android:name="com.example.b07demosummer2024.ui.emergency.DocumentFragment"
