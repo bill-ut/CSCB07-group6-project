@@ -1,8 +1,12 @@
 package com.example.b07demosummer2024;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        showDisclaimerDialog();
+
+        Log.d("MainActivity", "onCreate called");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
@@ -79,25 +86,58 @@ public class MainActivity extends AppCompatActivity {
 
         navController.setGraph(graph);
 
-        Button exitButton = findViewById(R.id.emergencyExitButton);
-        exitButton.setOnClickListener(v -> {
-            // Launch browser
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"));
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-
-            // Force complete termination
-            finishAffinity();
-            android.os.Process.killProcess(android.os.Process.myPid());
-            System.exit(0);
-        });
+        setupExitButton();
     }
-
-
 
     @Override
-    public void onBackPressed() {
-        // Default back behaviour: go up the back stack, or exit
-        super.onBackPressed();
+    protected void onResume() {
+        super.onResume();
+        setupExitButton();
+        // Ensure button is on top after fragment changes
+        Button exitButton = findViewById(R.id.emergencyExitButton);
+        if (exitButton != null) {
+            exitButton.bringToFront();
+        }
     }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setupExitButton() {
+        Button exitButton = findViewById(R.id.emergencyExitButton);
+        if (exitButton != null) {
+            exitButton.setHapticFeedbackEnabled(false);
+            exitButton.setSoundEffectsEnabled(false);
+
+            exitButton.bringToFront();
+
+            exitButton.setOnClickListener(v -> {
+                Log.d("MainActivity", "Exit button clicked at: " + System.currentTimeMillis());
+
+                // Disable the button immediately to prevent multiple clicks
+                v.setEnabled(false);
+
+                // Launch browser FIRST
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
+                // Small delay to ensure browser launches before termination
+                new Handler().postDelayed(() -> {
+                    finishAffinity();
+                    System.exit(0);
+                }, 100);
+            });
+        }
+    }
+
+    private void showDisclaimerDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Important Notice")
+                .setMessage("This app is NOT a substitute for emergency services. In case of immediate danger, call 911.\n\n" +
+                        "Safety plans are personal tools and cannot guarantee prevention of harm. " +
+                        "Please seek professional help when needed.")
+                .setPositiveButton("I Understand", null)
+                .setCancelable(false)
+                .show();
+    }
+
 }
