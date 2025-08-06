@@ -122,12 +122,35 @@ public class DataHandler {
         return stringToArray(rawAnswer);
     }
 
+    public ArrayList<String> getBranchIdsByQuestion(Question question) {
+        return getBranchIdsById(question.getId());
+    }
+
+    public ArrayList<String> getBranchIdsById(String questionId) {
+        JSONObject questionObject = questionsById.get(questionId);
+        if (questionObject == null) {
+            return new ArrayList<>();
+        }
+
+        try {
+            if (!questionObject.isNull("branches")) {
+                JSONObject branches = questionObject.getJSONObject("branches");
+                String raw = branches.getString(getAnswerById(questionId).get(0).replaceAll("\"", ""));
+                return stringToArray("[" + DataHandler.cleanString(raw) + "]");
+            }
+        } catch (JSONException e) {
+            Log.e("DataHandler", "Error getting branches for question: " + questionId, e);
+        }
+
+        return new ArrayList<>();
+    }
     public String getTipByQuestion(Question question) {
         return getTipById(question.getId());
     }
     public String getTipById(String questionId) {
         JSONObject questionObject = questionsById.get(questionId);
         if (questionObject == null) {
+            Log.d("abcde", "No question object found for: " + questionId);
             return "";
         }
 
