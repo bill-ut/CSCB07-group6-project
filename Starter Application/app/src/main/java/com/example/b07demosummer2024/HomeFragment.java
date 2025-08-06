@@ -1,6 +1,7 @@
 package com.example.b07demosummer2024;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,11 @@ public class HomeFragment extends Fragment {
         );
 
 
+        Button emergencyInfoButton = view.findViewById(R.id.emergencyInfoRedirect);
+        emergencyInfoButton.setOnClickListener(v -> {
+            NavHostFragment.findNavController(HomeFragment.this)
+                    .navigate(R.id.action_homeFragment_to_emergencyInfoFragment);
+        });
 
         return view;
     }

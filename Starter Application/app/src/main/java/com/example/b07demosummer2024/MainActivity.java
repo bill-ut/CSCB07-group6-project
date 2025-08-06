@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
+import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.b07demosummer2024.data.EncryptedPrefsProvider;
 
 import android.util.Log;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,9 +49,15 @@ public class MainActivity extends AppCompatActivity {
 
         Button exitButton = findViewById(R.id.emergencyExitButton);
         exitButton.setOnClickListener(v -> {
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://www.google.com")));
+            // Launch browser
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
+            // Force complete termination
             finishAffinity();
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(0);
         });
     }
 
