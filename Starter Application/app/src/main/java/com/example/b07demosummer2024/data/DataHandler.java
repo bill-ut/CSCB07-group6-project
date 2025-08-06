@@ -313,6 +313,42 @@ public class DataHandler {
     }
 
     /**
+     * Gets the array of question ids for the branches of a question. Delegates
+     * responsibility to {@link #getBranchIdsById}.
+     *
+     * @param question The question for the branches.
+     * @return An array of question ids.
+     */
+    public ArrayList<String> getBranchIdsByQuestion(Question question) {
+        return getBranchIdsById(question.getId());
+    }
+
+    /**
+     * Gets the array of question ids for the branches of a question by its id.
+     *
+     * @param question The question id for the branches.
+     * @return An array of question ids.
+     */
+    public ArrayList<String> getBranchIdsById(String questionId) {
+        JSONObject questionObject = questionsById.get(questionId);
+        if (questionObject == null) {
+            return new ArrayList<>();
+        }
+
+        try {
+            if (!questionObject.isNull("branches")) {
+                JSONObject branches = questionObject.getJSONObject("branches");
+                String raw = branches.getString(getAnswerById(questionId).get(0).replaceAll("\"", ""));
+                return stringToArray("[" + DataHandler.cleanString(raw) + "]");
+            }
+        } catch (JSONException e) {
+            Log.e("DataHandler", "Error getting branches for question: " + questionId, e);
+        }
+
+        return new ArrayList<>();
+    }
+
+    /**
      * Gets the tip corresponding to the question; delegates responsibility to
      * {@link #getTipById(String)}.
      *
@@ -332,6 +368,7 @@ public class DataHandler {
     public String getTipById(String questionId) {
         JSONObject questionObject = questionsById.get(questionId);
         if (questionObject == null) {
+            Log.d("abcde", "No question object found for: " + questionId);
             return "";
         }
 
