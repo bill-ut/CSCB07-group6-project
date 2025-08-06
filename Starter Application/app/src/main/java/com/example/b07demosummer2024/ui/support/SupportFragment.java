@@ -28,6 +28,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class SupportFragment extends Fragment {
 
@@ -64,7 +65,7 @@ public class SupportFragment extends Fragment {
         cityMap = new Gson().fromJson(json, type);
 
         // Fetch and resolve the user's city answer
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         DatabaseReference ref = FirebaseDatabase.getInstance()
                 .getReference("users")
                 .child(uid)
@@ -125,14 +126,19 @@ public class SupportFragment extends Fragment {
         List<Resource> resources = cityMap.get(city);
         if (resources == null || resources.isEmpty()) {
             TextView tv = new TextView(requireContext());
+
+            tv.setText(R.string.no_resources);
+
             tv.setText("No local resources found.");
             tv.setPadding(0, 16, 0, 16);
+
             llContainer.addView(tv);
             return;
         }
 
         LayoutInflater inflater = LayoutInflater.from(requireContext());
         for (Resource r : resources) {
+
             View item = inflater.inflate(R.layout.item_resource, llContainer, false);
 
             TextView nameTv = item.findViewById(R.id.tvResourceName);

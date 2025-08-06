@@ -14,8 +14,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
+/**
+ * Defines retrieval operations specifically for <code>.json</code> files. For a more general data
+ * I/O class, see below.
+ *
+ * @see DataHandler
+ */
 public class JsonReader {
 
+    /**
+     * Loads a json file from Android assets.
+     *
+     * @param context The context containing the assets.
+     * @param fileName The name of the file.
+     * @return A string representing the j.son file.
+     */
     public static String loadJSONFromAsset(Context context, String fileName) {
         String json;
         try {
@@ -33,6 +46,13 @@ public class JsonReader {
         return json;
     }
 
+    /**
+     * Loads a json file and constructs a map of the questions defined by it.
+     *
+     * @param context The context containing the assets.
+     * @param fileName The name of the file
+     * @return An ordered map containing the question id and its corresponding question object.
+     */
     public static LinkedHashMap<String, Question> getQuestionMap(Context context, String fileName) {
         LinkedHashMap<String, Question> questions = new LinkedHashMap<>();
 

@@ -124,5 +124,7 @@
         <item quantity="one">* Select %1$d option</item>
         <item quantity="other">* Select up to %1$d options</item>
     </plurals>
-
+  
+    <!-- Resources -->
+    <string name="no_resources">No local resources found.</string>
 </resources>
