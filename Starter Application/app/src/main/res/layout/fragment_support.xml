@@ -1,29 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <!-- Scrollable content -->
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <!-- We’ll dynamically add city-specific links here -->
-        <TextView
-            android:id="@+id/tvSupportHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Loading resources…"
-            android:textSize="20sp"
-            android:layout_marginBottom="12dp"/>
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:layout_marginBottom="56dp">
 
         <LinearLayout
-            android:id="@+id/llResourcesContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:orientation="vertical">
 
-    </LinearLayout>
-</ScrollView>
+            <!-- Big, bold header -->
+            <TextView
+                android:id="@+id/tvSupportHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Loading resources…"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Container for dynamic resource items -->
+            <LinearLayout
+                android:id="@+id/llResourcesContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Persistent Home button -->
+    <Button
+        android:id="@+id/homeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Home"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="16dp"/>
+</FrameLayout>

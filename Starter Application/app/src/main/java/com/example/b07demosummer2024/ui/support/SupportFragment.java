@@ -7,12 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.data.JsonReader;
@@ -104,7 +106,13 @@ public class SupportFragment extends Fragment {
                 Log.e("SupportFragment", "Firebase error", e.toException());
                 showResourcesFor(null);
             }
+
         });
+        Button homeButton = view.findViewById(R.id.homeButton);
+        homeButton.setOnClickListener(v ->
+                Navigation.findNavController(v)
+                        .navigate(R.id.action_support_to_home)
+        );
     }
 
     private void showResourcesFor(@Nullable String city) {
@@ -118,19 +126,29 @@ public class SupportFragment extends Fragment {
         List<Resource> resources = cityMap.get(city);
         if (resources == null || resources.isEmpty()) {
             TextView tv = new TextView(requireContext());
+
             tv.setText(R.string.no_resources);
+
+            tv.setText("No local resources found.");
+            tv.setPadding(0, 16, 0, 16);
+
             llContainer.addView(tv);
             return;
         }
 
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
         for (Resource r : resources) {
-            TextView entry = new TextView(requireContext());
-            entry.setText(String.format("%s\n%s", r.getName(), r.getUrl()));
-            entry.setAutoLinkMask(Linkify.WEB_URLS);
-            entry.setLinksClickable(true);
-            entry.setMovementMethod(LinkMovementMethod.getInstance());
-            entry.setPadding(0, 16, 0, 16);
-            llContainer.addView(entry);
+
+            View item = inflater.inflate(R.layout.item_resource, llContainer, false);
+
+            TextView nameTv = item.findViewById(R.id.tvResourceName);
+            TextView linkTv = item.findViewById(R.id.tvResourceLink);
+
+            nameTv.setText(r.getName());
+            linkTv.setText(r.getUrl());
+            linkTv.setMovementMethod(LinkMovementMethod.getInstance());
+
+            llContainer.addView(item);
         }
     }
 }
