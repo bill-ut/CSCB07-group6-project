@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
 
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.data.DataHandler;
@@ -120,6 +122,8 @@ public class QuestionnaireFragment extends Fragment {
 
                 AnswerSaver.saveAllAnswers(answers);
                 Toast.makeText(getContext(), "Answers saved successfully!", Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(v)
+                        .navigate(R.id.action_questionnaireFragment_to_home);
             };
 
             submitButton.setOnClickListener(saver);

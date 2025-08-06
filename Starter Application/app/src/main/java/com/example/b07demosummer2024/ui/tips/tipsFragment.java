@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.example.b07demosummer2024.R;
@@ -54,6 +56,12 @@ public class tipsFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.tipsRecyclerView);
 
         setUpTipModels(recyclerView);
+
+        Button homeButton = view.findViewById(R.id.homeButton);
+        homeButton.setOnClickListener(v ->
+                Navigation.findNavController(v)
+                        .navigate(R.id.action_tips_to_home)
+        );
 
         if (getView() == null) {
             Log.e("tipsFragment", "View not found");
