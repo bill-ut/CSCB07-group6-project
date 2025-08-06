@@ -26,6 +26,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class SupportFragment extends Fragment {
 
@@ -62,7 +63,7 @@ public class SupportFragment extends Fragment {
         cityMap = new Gson().fromJson(json, type);
 
         // Fetch and resolve the user's city answer
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         DatabaseReference ref = FirebaseDatabase.getInstance()
                 .getReference("users")
                 .child(uid)
@@ -117,14 +118,14 @@ public class SupportFragment extends Fragment {
         List<Resource> resources = cityMap.get(city);
         if (resources == null || resources.isEmpty()) {
             TextView tv = new TextView(requireContext());
-            tv.setText("No local resources found.");
+            tv.setText(R.string.no_resources);
             llContainer.addView(tv);
             return;
         }
 
         for (Resource r : resources) {
             TextView entry = new TextView(requireContext());
-            entry.setText(r.getName() + "\n" + r.getUrl());
+            entry.setText(String.format("%s\n%s", r.getName(), r.getUrl()));
             entry.setAutoLinkMask(Linkify.WEB_URLS);
             entry.setLinksClickable(true);
             entry.setMovementMethod(LinkMovementMethod.getInstance());
