@@ -15,6 +15,7 @@ import java.util.LinkedHashMap;
  * Generic class which represents a general question type.
  */
 public abstract class Question {
+
     protected final String id;
     protected final String statement;
     protected Response response;

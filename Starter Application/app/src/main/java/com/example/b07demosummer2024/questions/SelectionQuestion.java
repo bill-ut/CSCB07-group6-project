@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
  * responses, allowing for more than one valid selection at a time.
  */
 public class SelectionQuestion extends Question {
+
     protected ArrayList<String> choices;
 
     /**

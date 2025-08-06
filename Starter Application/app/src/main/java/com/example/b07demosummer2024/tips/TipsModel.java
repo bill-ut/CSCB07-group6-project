@@ -4,6 +4,7 @@ package com.example.b07demosummer2024.tips;
  * Encapsulates the necessary data to display a tip.
  */
 public class TipsModel {
+
     String text;
     int image;
 

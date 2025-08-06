@@ -12,6 +12,7 @@ import com.example.b07demosummer2024.questions.widget.TextWidget;
  * Also includes the date based responses.
  */
 public class FreeformQuestion extends Question {
+
     private final String type;
 
     /**

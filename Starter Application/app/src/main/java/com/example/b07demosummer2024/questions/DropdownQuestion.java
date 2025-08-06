@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * of options.
  */
 public class DropdownQuestion extends Question {
+
     protected ArrayList<String> choices;
 
     /**
