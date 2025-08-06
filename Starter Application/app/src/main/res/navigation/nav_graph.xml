@@ -100,7 +100,9 @@
         android:label="QuestionnaireFragment" >
         <action
             android:id="@+id/action_questionnaireFragment_to_home"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/questionnaireFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/tipsFragment"
@@ -155,7 +157,9 @@
         android:id="@+id/supportFragment"
         android:name="com.example.b07demosummer2024.ui.support.SupportFragment"
         android:label="Support Resources">
-        <!-- optional actions if you want Back or deep-links -->
+        <action
+            android:id="@+id/action_support_to_home"
+            app:destination="@id/homeFragment" />
     </fragment>
 
 </navigation>
