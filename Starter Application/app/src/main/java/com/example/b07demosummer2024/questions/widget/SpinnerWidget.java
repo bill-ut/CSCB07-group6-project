@@ -11,12 +11,25 @@ import androidx.core.content.ContextCompat;
 
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.questions.response.Response;
-import com.example.b07demosummer2024.questions.response.SingleResponse;
 
 import java.util.ArrayList;
 
+/**
+ * Defines the dropdown question type widget. No additional methods are defined.
+ */
 public class SpinnerWidget extends Widget {
-    ArrayList<String> choices;
+    private final ArrayList<String> choices;
+
+    /**
+     * Generic constructor setting up the layout using the <code>Spinner</code> view. Additionally
+     * defines the array of choices the user can choose from. See
+     * {@link Widget#Widget(Context, String)} for the parent constructor.
+     *
+     * @param context The context to place the displays in.
+     * @param statement The question statement.
+     * @param response The locally stored response object.
+     * @param choices The question choices.
+     */
     public SpinnerWidget(Context context, String statement, Response response, ArrayList<String> choices) {
         super(context, statement);
         Spinner sp = new Spinner(context);
@@ -33,6 +46,55 @@ public class SpinnerWidget extends Widget {
         buildLayout(statement, response);
     }
 
+    /**
+     * Provides implementation for {@link Widget#setHandler(Runnable)}. Callback is made when user
+     * selects an item.
+     *
+     * @param handler The function to run after a user interaction with the view.
+     */
+    @Override
+    public void setHandler(Runnable handler) {
+        ((Spinner) this.widget).setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                        handler.run();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parentView) {
+                        // your code here
+                    }
+                }
+        );
+    }
+
+    /**
+     * Provides implementation for {@link Widget#setDisplay(String)}.
+     *
+     * @param response The selected response to display as a string or encoded string.
+     */
+    @Override
+    public void setDisplay(String response) {
+        ((Spinner) this.widget).setSelection(choices.indexOf(response));
+    }
+
+    /**
+     * Provides implementation for {@link Widget#setResponseValue(Response)}. Sets response value
+     * using the internal response object.
+     *
+     * @param response The response object to set.
+     */
+    @Override
+    public void setResponseValue(Response response) {
+        (response).setValue(
+                ((Spinner) this.widget).getSelectedItem().toString()
+        );
+    }
+
+    /**
+     * Provides implementation for {@link Widget#setWarning()}.
+     */
     @Override
     protected void setWarning() {
         warning.setText(R.string.spinner_warning);
@@ -44,35 +106,6 @@ public class SpinnerWidget extends Widget {
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
                 )
-        );
-    }
-
-    @Override
-    public void setResponseValue(Response response) {
-        ((SingleResponse) response).setResponse(
-                ((Spinner) this.widget).getSelectedItem().toString()
-        );
-    }
-
-    @Override
-    public void setDisplay(String response) {
-        ((Spinner) this.widget).setSelection(choices.indexOf(response));
-    }
-
-    @Override
-    public void setHandler(Runnable handler) {
-        ((Spinner) this.widget).setOnItemSelectedListener(
-            new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    handler.run();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parentView) {
-                    // your code here
-                }
-            }
         );
     }
 }
