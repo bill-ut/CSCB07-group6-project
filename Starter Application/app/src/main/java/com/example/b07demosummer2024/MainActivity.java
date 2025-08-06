@@ -1,7 +1,9 @@
 package com.example.b07demosummer2024;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        showDisclaimerDialog();
 
         Log.d("MainActivity", "onCreate called");
 
@@ -124,6 +127,17 @@ public class MainActivity extends AppCompatActivity {
                 }, 100);
             });
         }
+    }
+
+    private void showDisclaimerDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Important Notice")
+                .setMessage("This app is NOT a substitute for emergency services. In case of immediate danger, call 911.\n\n" +
+                        "Safety plans are personal tools and cannot guarantee prevention of harm. " +
+                        "Please seek professional help when needed.")
+                .setPositiveButton("I Understand", null)
+                .setCancelable(false)
+                .show();
     }
 
 }
