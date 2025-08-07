@@ -7,6 +7,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -62,6 +63,10 @@ public class QuestionnaireFragment extends Fragment {
         @NonNull View view,
         @Nullable Bundle savedInstanceState
     ) {
+        Button homeButton = view.findViewById(R.id.homeButton);
+        homeButton.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_questionnaireFragment_to_home);
+        });
         super.onViewCreated(view, savedInstanceState);
         new DataHandler(getContext(), dh -> {
             if (getView() == null) {
