@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,6 +49,11 @@ public class ReminderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reminders, container, false);
+
+        Button backBtn = view.findViewById(R.id.btnBack);
+        backBtn.setOnClickListener(v ->
+                Navigation.findNavController(v).navigateUp()
+        );
 
         timePicker = view.findViewById(R.id.timePicker);
         frequencySpinner = view.findViewById(R.id.frequencySpinner);
