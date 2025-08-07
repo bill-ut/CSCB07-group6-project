@@ -29,7 +29,9 @@
             android:layout_height="wrap_content"
             android:text="Category Name"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:clickable="false"
+            android:focusable="false"/>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

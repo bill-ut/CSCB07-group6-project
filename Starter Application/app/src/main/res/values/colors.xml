@@ -6,4 +6,24 @@
     <color name="text_dark">#333333</color>
     <color name="white">#FFFFFF</color>
 
+    <!-- Backgrounds -->
+    <color name="background_light">#FAF9F6</color> <!-- warm off-white -->
+    <color name="card_background">#FFFFFF</color> <!-- pure white for cards -->
+
+    <!-- Primary color palette -->
+    <color name="blue_gray">#607D8B</color> <!-- border/frame outline -->
+    <color name="blue_gray_dark">#455A64</color> <!-- optional for darker accents -->
+    <color name="blue_gray_light">#CFD8DC</color> <!-- optional for highlights -->
+
+    <!-- Accent colors -->
+    <color name="button_fill">#5C4D91</color> <!-- your previous purple -->
+    <color name="button_text">#FFFFFF</color>
+
+    <!-- Text -->
+    <color name="black">#000000</color>
+    <color name="gray_text">#555555</color>
+
+    <!-- Stroke/border -->
+    <color name="stroke_color">#607D8B</color>
+
 </resources>
