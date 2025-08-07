@@ -1,15 +1,18 @@
 package com.example.b07demosummer2024.questions;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.Pair;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
+import com.example.b07demosummer2024.questions.response.MultipleResponse;
 import com.example.b07demosummer2024.questions.response.Response;
 import com.example.b07demosummer2024.questions.widget.Widget;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Generic class which represents a general question type.
@@ -25,15 +28,27 @@ public abstract class Question {
 
     /**
      * Determines whether the <code>LinkedHashMap</code> of <code>Question</code>'s has an invalid response.
-     * Validity is determined on each iteration using {@link #isValid()}.
+     * Validity is determined on each iteration using {@link #isValid()}. If the question contains
+     * branches, then the validity of the branched questions are also assessed.
      *
      * @param questions The hash map of questions to verify.
      * @return <code>true</code> iff all questions are valid according to {@link #isValid()},
      * <code>false</code> otherwise.
      */
     public static boolean hasInvalid(LinkedHashMap<String, Question> questions) {
+        if (questions.isEmpty()) {
+            return false;
+        }
+
         for (Question q: questions.values()) {
-            if (!q.isValid())
+            LinkedHashMap<String, Question> branch = new LinkedHashMap<>();
+            for (Map.Entry<String, Pair<String, Question>> branchData : q.getBranches().entrySet()) {
+                if (((MultipleResponse) q.getResponse()).getResponse().contains(branchData.getKey()))
+                    branch.put(branchData.getValue().first, branchData.getValue().second);
+            }
+
+            Log.d("Question", "Branch check: " + hasInvalid(branch) + " question: " + q);
+            if (!q.isValid() || hasInvalid(branch))
                 return true;
         }
         return false;
@@ -76,6 +91,7 @@ public abstract class Question {
      * Implementation depends on type of {@link com.example.b07demosummer2024.questions.Question}.
      */
     public abstract void updateBranch();
+
 
     /**
      * Generic callback to be invoked on user interaction with the question elements. Updates the

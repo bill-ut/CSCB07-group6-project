@@ -55,7 +55,7 @@ public class DataHandler {
 
         List<String> cleaned = new ArrayList<>();
         for (String part : parts) {
-            cleaned.add(part.replaceAll("^\"|\"$", "").trim());
+            cleaned.add(part.replaceAll("[\"\\\\]", "").trim());
         }
 
         return String.join(", ", cleaned);
@@ -326,7 +326,7 @@ public class DataHandler {
     /**
      * Gets the array of question ids for the branches of a question by its id.
      *
-     * @param question The question id for the branches.
+     * @param questionId The question id for the branches.
      * @return An array of question ids.
      */
     public ArrayList<String> getBranchIdsById(String questionId) {
