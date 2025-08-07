@@ -150,6 +150,12 @@
         <action
         android:id="@+id/action_homeFragment_to_reminderFragment"
         app:destination="@id/reminderFragment" />
+
+        <action
+            android:id="@+id/action_reminder_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"/>
   
     <fragment
         android:id="@+id/documentFragment"
