@@ -11,6 +11,7 @@
 
     <TextView
         android:id="@+id/titleText"
+        style="@style/BlueGrayOutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Safe Locations"
@@ -32,6 +33,7 @@
 
     <Button
         android:id="@+id/backButton"
+        style="@style/BlueGrayOutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Back"
@@ -40,6 +42,7 @@
 
     <Button
         android:id="@+id/addLocationButton"
+        style="@style/BlueGrayOutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add Location"

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="red">#FF5454</color>
+    <color name="red">#FF0000</color>
+    <color name="bg_offwhite">#F5F5F5</color>
+    <color name="button_bluegray">#5A7D9A</color>
+    <color name="text_dark">#333333</color>
+    <color name="white">#FFFFFF</color>
+
 </resources>

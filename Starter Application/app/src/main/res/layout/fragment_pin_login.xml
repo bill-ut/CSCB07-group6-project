@@ -7,6 +7,7 @@
 
     <TextView
         android:id="@+id/tvPinPrompt"
+        style="@style/BlueGrayOutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Enter your PIN"
@@ -19,6 +20,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etPin"
+            style="@style/BlueGrayOutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberPassword"
@@ -28,6 +30,7 @@
 
     <Button
         android:id="@+id/btnSubmitPin"
+        style="@style/BlueGrayOutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Submit"
@@ -35,6 +38,7 @@
 
     <TextView
         android:id="@+id/tvUsePassword"
+        style="@style/BlueGrayOutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Use password / Google login"

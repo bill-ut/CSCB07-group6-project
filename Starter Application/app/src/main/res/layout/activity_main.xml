@@ -41,6 +41,7 @@
 
     <Button
         android:id="@+id/emergencyExitButton"
+        style="@style/ExitButtonFilled"
         android:clickable="true"
         android:focusable="true"
         android:elevation="100dp"
