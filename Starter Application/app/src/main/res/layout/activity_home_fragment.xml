@@ -21,10 +21,15 @@
     <!-- 2. Questions button below Email -->
     <Button
         android:id="@+id/questionnaireRedirect"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="16dp"
         android:layout_marginTop="24dp"
         android:text="Questions"
+        android:layout_width="200dp"
+        android:textSize="16sp"
+        app:icon="@drawable/ic_questions_24"
+        app:iconGravity="start"
+        app:iconSize="28dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvEmail" />
@@ -32,10 +37,15 @@
     <!-- 3. Support Resources under Questions -->
     <Button
         android:id="@+id/supportButton"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:textSize="16sp"
+        android:padding="16dp"
         android:layout_marginTop="16dp"
         android:text="Support Resources"
+        app:icon="@drawable/ic_support_24"
+        app:iconGravity="start"
+        app:iconSize="28dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/questionnaireRedirect" />
@@ -44,10 +54,15 @@
 
     <Button
         android:id="@+id/tipsRedirect"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:textSize="16sp"
+        android:padding="16dp"
         android:layout_marginTop="16dp"
-        android:text="Tips"
+        android:text="Plan and Tips"
+        app:icon="@drawable/ic_tips_24"
+        app:iconGravity="start"
+        app:iconSize="28dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/supportButton" />
@@ -64,9 +79,14 @@
 
     <Button
         android:id="@+id/emergencyInfoRedirect"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:textSize="16sp"
+        android:padding="16dp"
         android:text="Emergency Info"
+        app:icon="@drawable/ic_emergency_24"
+        app:iconGravity="start"
+        app:iconSize="28dp"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/tipsRedirect"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,9 +95,14 @@
 
     <Button
         android:id="@+id/remindersRedirect"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:textSize="16sp"
+        android:padding="16dp"
         android:text="Reminders"
+        app:icon="@drawable/ic_reminder_24"
+        app:iconGravity="start"
+        app:iconSize="28dp"
         app:layout_constraintTop_toBottomOf="@id/emergencyInfoRedirect"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
