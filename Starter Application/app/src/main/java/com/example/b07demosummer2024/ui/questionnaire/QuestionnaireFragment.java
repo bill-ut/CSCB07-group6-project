@@ -90,14 +90,9 @@ public class QuestionnaireFragment extends Fragment {
             addHeader("Section 3:");
             setupQuestions(followupQuestions, dh);
 
-
-            Log.d("Questionnaire", "Array size: " + questions.size());
-
             View submitButton = view.findViewById(R.id.submitAnswersButton);
             View.OnClickListener saver = v -> {
-                if (Question.hasInvalid(questions) &&
-                        Question.hasInvalid(branchQuestions) &&
-                        Question.hasInvalid(followupQuestions)) {
+                if (Question.hasInvalid(questions) || Question.hasInvalid(followupQuestions)) {
                     Toast.makeText(getContext(), "Invalid response to one or more questions", Toast.LENGTH_SHORT).show();
                     return;
                 }
