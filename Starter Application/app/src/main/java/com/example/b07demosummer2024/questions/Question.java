@@ -1,7 +1,6 @@
 package com.example.b07demosummer2024.questions;
 
 import android.content.Context;
-import android.util.Log;
 import android.util.Pair;
 import android.widget.LinearLayout;
 
@@ -43,11 +42,10 @@ public abstract class Question {
         for (Question q: questions.values()) {
             LinkedHashMap<String, Question> branch = new LinkedHashMap<>();
             for (Map.Entry<String, Pair<String, Question>> branchData : q.getBranches().entrySet()) {
-                if (((MultipleResponse) q.getResponse()).getResponse().contains(branchData.getKey()))
-                    branch.put(branchData.getValue().first, branchData.getValue().second);
+                if (((MultipleResponse) q.getResponse()).getResponse().contains(branchData.getValue().first))
+                    branch.put(branchData.getKey(), branchData.getValue().second);
             }
 
-            Log.d("Question", "Branch check: " + hasInvalid(branch) + " question: " + q);
             if (!q.isValid() || hasInvalid(branch))
                 return true;
         }
