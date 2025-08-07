@@ -40,6 +40,7 @@
     <!-- Add Home button here -->
     <Button
         android:id="@+id/homeButton"
+        style="@style/BlueGrayOutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Home"
