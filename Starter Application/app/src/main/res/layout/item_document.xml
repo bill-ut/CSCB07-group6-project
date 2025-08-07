@@ -23,6 +23,7 @@
 
             <TextView
                 android:id="@+id/documentNameText"
+                style="@style/BlueGrayOutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
@@ -31,6 +32,7 @@
 
             <TextView
                 android:id="@+id/documentDescriptionText"
+                style="@style/BlueGrayOutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
@@ -41,6 +43,7 @@
             <!-- NEW: Clear file attached indicator -->
             <TextView
                 android:id="@+id/fileAttachedText"
+                style="@style/BlueGrayOutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="📎 File attached - Tap to view"
@@ -58,7 +61,7 @@
             android:text="View"
             android:visibility="gone"
             android:layout_marginEnd="8dp"
-            style="?android:attr/buttonBarButtonStyle" />
+            style="@style/BlueGrayOutlinedButton" />
 
         <Button
             android:id="@+id/editButton"
@@ -66,14 +69,14 @@
             android:layout_height="wrap_content"
             android:text="Edit"
             android:layout_marginEnd="8dp"
-            style="?android:attr/buttonBarButtonStyle" />
+            style="@style/BlueGrayOutlinedButton" />
 
         <Button
             android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Delete"
-            style="?android:attr/buttonBarButtonStyle" />
+            style="@style/BlueGrayOutlinedButton" />
 
     </LinearLayout>
 

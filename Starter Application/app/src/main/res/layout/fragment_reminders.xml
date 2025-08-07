@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Your scrollable content -->
+    <!-- Make content scrollable -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,8 +17,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Time Picker with styled button -->
             <TimePicker
                 android:id="@+id/timePicker"
+                style="@style/BlueGrayOutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -39,6 +41,7 @@
 
             <Button
                 android:id="@+id/btnAddReminder"
+                style="@style/BlueGrayOutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Add Reminder"
@@ -47,13 +50,12 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/reminderList"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:paddingTop="16dp"/>
         </LinearLayout>
     </ScrollView>
 
-
+    <!-- Back button -->
     <Button
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"

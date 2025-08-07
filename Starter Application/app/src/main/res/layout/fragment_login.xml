@@ -41,6 +41,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/signInButton"
+        style="@style/BlueGrayOutlinedButton"
         android:text="Sign In"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -51,6 +52,7 @@
 
     <TextView
         android:id="@+id/toSignupText"
+        style="@style/BlueGrayOutlinedButton"
         android:text="No account? Sign up"
         android:textColor="?attr/colorPrimary"
         android:layout_width="wrap_content"
