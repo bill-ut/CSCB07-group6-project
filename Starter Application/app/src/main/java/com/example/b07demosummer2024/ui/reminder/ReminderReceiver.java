@@ -17,7 +17,6 @@ public class ReminderReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String text = intent.getStringExtra("reminderText");
 
         Intent notificationIntent = new Intent(context, MainActivity.class); // or LoginActivity
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -36,8 +35,9 @@ public class ReminderReceiver extends BroadcastReceiver {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("Safety Plan Reminder")
-                .setContentText(text)
+                .setContentTitle("Reminder")
+                .setContentText("You have something scheduled.")
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
