@@ -18,5 +18,5 @@ Tod (Shengtao): Emergency info, emergency exit button, UI touchup,  home page bu
 
 ### Needed to properly test the app ### 
 
-google-services.json file that will be included in the .zip file in submission. Open the Starter Application, add this file under app, then sync Gradle. 
+Download .zip file, open the Starter Application folder, build, then run! google-services.json is alreaady in the deliverable.  
 
